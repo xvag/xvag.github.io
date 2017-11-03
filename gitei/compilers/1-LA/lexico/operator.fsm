@@ -1,0 +1,17 @@
+O0:	\*	-> O3
+	/	-> O2
+	+ \- %	-> O1
+	=	-> O6
+O1:	=	-> O6
+	\n	-> GOOD
+O2:	/	-> O4
+	\n	-> GOOD
+O3:	\*	-> O5
+	=	-> O6
+	\n	-> GOOD
+O4:	=	-> O6
+	\n	-> GOOD
+O5:	=	-> O6
+	\n	-> GOOD
+O6:	\n	-> GOOD
+GOOD(OK):

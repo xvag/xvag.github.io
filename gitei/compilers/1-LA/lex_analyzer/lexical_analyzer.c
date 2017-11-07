@@ -13,7 +13,7 @@ void scanner();
 
 void dbg(char* prn)
 {
-	printf("%s", prn);
+	//printf("%s", prn);
 }
 
 void avoidblanks()
@@ -24,7 +24,7 @@ void avoidblanks()
 		if(ch=='\n')lcounter+=1;
 		if((ch!=' ')&&(ch!='\n')&&(ch!='\t'))
 		{
-			printf("%d whites, line: %d",wc,lcounter);
+			printf("%d whites, line: %d\n",wc,lcounter);
 			break;
 		}
 		ch=fgetc(fp);
@@ -35,10 +35,7 @@ void avoidblanks()
 void avoidchars()
 {
 	int uc=0;
-	printf("%c",ch);
-	ch=fgetc(fp);
-
-/*	while (ch!=EOF)
+	while (ch!=EOF)
 	{
 		if((ch!=' ')&&(ch!='\n')&&(ch!='\t'))
 		{
@@ -50,7 +47,7 @@ void avoidchars()
 			printf("%d unknown, line:%d\n",uc,lcounter);
 			break;
 		}
-	}*/
+	}
 }
 
 
@@ -69,22 +66,22 @@ int main(int argc, char** argv)
 		counter=0;
 		if((ch==' ')||(ch=='\n')||(ch=='\t'))
 		{
-			printf("\n[SKIP white spaces]: ");
-			flag=0;
+			if(flag==1){flag=0;printf("\n");}
+			printf("[SKIP white spaces]: ");
 			avoidblanks();
 		}
 		else if ((ch>='0'&&ch<='9')||(ch>='a'&&ch<='z')||(ch=='+')||(ch=='=')||(ch=='-')||(ch=='*')||(ch=='%')||(ch=='.')||(ch=='\'')||(ch=='\"'))
 		{
-			//printf("\n");
 			flag=0;
 			scanner(); continue;
 		}
 		else
 		{
-			//dbg("Skip unknown characters: ");
-			if (flag==0) printf("\n[SKIP Unknown characters]: ");
-			avoidchars();
+			//avoidchars();
+			if (flag==0) printf("[SKIP Unknown characters]: ");
 			flag=1;
+			printf("%c",ch);
+			ch=fgetc(fp);
 		}
 	}
 	
@@ -326,6 +323,8 @@ void scanner()
 				}
 			case BAD:
 				{
+					dbg(" ---> ");
+					currSt=FOUND;
 					printf("BAD: line=%d, chars=%d\n",lcounter,counter);
 					break;
 				}
@@ -334,8 +333,7 @@ void scanner()
 					break;
 				}
 		}
-		if ((currSt==FOUND)||(currSt==BAD)){break;}
-
-		if (currSt!=GOOD){ch=fgetc(fp);counter++;}
+		if (currSt==FOUND){break;}
+		else{ch=fgetc(fp);counter++;}
 	}
 }

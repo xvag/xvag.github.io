@@ -24,7 +24,7 @@ void avoidblanks()
 		if(ch=='\n')lcounter+=1;
 		if((ch!=' ')&&(ch!='\n')&&(ch!='\t'))
 		{
-			printf("%d whites, line: %d\n",wc,lcounter);
+			printf("%d whites, line: %d",wc,lcounter);
 			break;
 		}
 		ch=fgetc(fp);
@@ -69,13 +69,13 @@ int main(int argc, char** argv)
 		counter=0;
 		if((ch==' ')||(ch=='\n')||(ch=='\t'))
 		{
-			dbg("\n[SKIP white spaces]: ");
+			printf("\n[SKIP white spaces]: ");
 			flag=0;
 			avoidblanks();
 		}
-		else if ((ch>='0'&&ch<='9')||(ch=='+')||(ch=='=')||(ch=='-')||(ch=='*')||(ch=='%')||(ch=='.'))
+		else if ((ch>='0'&&ch<='9')||(ch>='a'&&ch<='z')||(ch=='+')||(ch=='=')||(ch=='-')||(ch=='*')||(ch=='%')||(ch=='.')||(ch=='\'')||(ch=='\"'))
 		{
-			printf("\n");
+			//printf("\n");
 			flag=0;
 			scanner(); continue;
 		}
@@ -87,7 +87,8 @@ int main(int argc, char** argv)
 			flag=1;
 		}
 	}
-
+	
+	printf("\n");
 	fclose(fp);
 	fclose(fo);
 	return 0;
@@ -95,7 +96,7 @@ int main(int argc, char** argv)
 
 void scanner()
 {
-	dbg("Scanning..\n");
+	dbg("\nScanning.. ");
 	State currSt=Q0;
 	State prevSt;
 	while(1)
@@ -114,7 +115,7 @@ void scanner()
 					else if (ch=='.'){currSt=E1; break;}
 					else if (ch=='0'){currSt=I0; break;}
 					else if ((ch>='1')&(ch<='9')){currSt=I1; break;}
-					else if (ch=='_'){currSt=V0; break;}
+					else if ((ch>='a'&&ch<='z')||(ch=='_')){currSt=V0; break;}
 					else if (ch=='\''){currSt=E5; break;}
 					else if (ch=='\"'){currSt=E4; break;}
 					else if (ch=='#'){currSt=C0; break;}
@@ -204,22 +205,36 @@ void scanner()
 			case V0:
 				{
 					dbg(" V0");
-					if (ch=='_'){currSt=V0; break;}
+					if ((ch>='a'&&ch<='z')||(ch=='_')){currSt=V0; break;}
 					else {currSt=GOOD; token=4; break;}
 				}
-
-			//S1,S2
+			case S0:
+				{
+					dbg(" S0");
+					currSt=GOOD; token=5; break;
+				}
+			case S1:
+				{
+					dbg(" S1");
+					currSt=GOOD; token=5; break;
+				}
+			case S2:
+				{
+					dbg(" S2");
+					if(ch=='\"'){currSt=E7; break;}
+					else {currSt=GOOD; token=5; break;}
+				}
 			case C0:
 				{
 					dbg(" C0");
-					if ((ch>=' ')&&(ch<='z')){currSt=C0; break;}
+					if ((ch>='a')&&(ch<='z')){currSt=C0; break;}
 					else {currSt=GOOD; token=6; break;}
 				}
 			case C1:
 				{
 					dbg(" C1");
-					if ((ch>=' ')&&(ch<='z')||(ch=='\n')){currSt=E7; break;}
-					else if (ch=='"'){currSt=C1; break;}
+					if ((ch>='a')&&(ch<='z')){currSt=E7; break;}
+					else if (ch=='\"'){currSt=C1; break;}
 					else {currSt=GOOD; token=6; break;}
 				}
 			case E0:
@@ -252,59 +267,61 @@ void scanner()
 				{
 					dbg(" E4");
 					if (ch=='\"'){currSt=S2; break;}
-					else if ((ch>=' ')&&(ch<='z')){currSt=E6; break;}
+					else if ((ch>='a')&&(ch<='z')){currSt=E6; break;}
 					else {currSt=BAD; btoken=5; break;}
 				}
 			case E5:
 				{
 					dbg(" E5");
-					if ((ch>=' ')&&(ch<='z')){currSt=E5; break;}
+					if ((ch>='a')&&(ch<='z')){currSt=E5; break;}  //problem
 					else if (ch=='\''){currSt=S0; break;}
 					else {currSt=BAD; btoken=6; break;}
 				}
 			case E6:
 				{
 					dbg(" E6");
-					if ((ch>=' ')&&(ch<='z')){currSt=E6; break;}
-					else if (ch=='\"'){currSt=E6; break;}
+					if ((ch>='a')&&(ch<='z')){currSt=E6; break;}
+					else if (ch=='\"'){currSt=S1; break;}
 					else {currSt=BAD; btoken=7; break;}
 				}
 			case E7:
 				{
 					dbg(" E7");
-					if ((ch>=' ')&&(ch<='z')||(ch=='\n')){currSt=E7; break;}
+					if ((ch>='a')&&(ch<='z')||(ch=='\n')){currSt=E7; break;}
 					else if (ch=='\"'){currSt=E8; break;}
 					else {currSt=BAD; btoken=8; break;}
 				}
 			case E8:
 				{
 					dbg(" E8");
-					if ((ch>=' ')&&(ch<='z')||(ch=='\n')){currSt=E7; break;}
+					if ((ch>='a')&&(ch<='z')||(ch=='\n')){currSt=E7; break;}
 					else if (ch=='\"'){currSt=E9; break;}
 					else {currSt=BAD; btoken=9; break;}
 				}
 			case E9:
 				{
 					dbg(" E9");
-					if ((ch>=' ')&&(ch<='z')||(ch=='\n')){currSt=E7; break;}
+					if ((ch>='a')&&(ch<='z')||(ch=='\n')){currSt=E7; break;}
 					else if (ch=='\"'){currSt=C1; break;}
 					else {currSt=BAD; btoken=8; break;}
 				}
 			case GOOD:
 				{
+					dbg(" ---> ");
 					currSt=FOUND;
 					if(token==1)
-						printf("\tOPERATOR: %d chars line:%d\n",counter,lcounter);
+						printf("line %d: <OPERATOR> %d chars",lcounter,counter);
 					else if(token==2)
-						printf("\tINTEGER: %d chars line:%d\n",counter,lcounter);
+						printf("line %d: <INTEGER> %d chars",lcounter,counter);
 					else if(token==3)
-						printf("\tFLOAT: %d chars line:%d\n",counter,lcounter);
+						printf("line %d: <FLOAT> %d chars",lcounter,counter);
 					else if (token==4)
-						printf("\tVARIABLE: %d chars line:%d\n",counter,lcounter);
+						printf("line %d: <VARIABLE> %d chars",lcounter,counter);
 					else if (token==5)
-						printf("\tSTRING: %d chars line:%d\n",counter,lcounter);
+						printf("line %d: <STRING> %d chars",lcounter,counter);
 					else if (token==6)
-						printf("\tCOMMENT: %d chars line:%d\n",counter,lcounter);
+						printf("line %d: <COMMENT> %d chars",lcounter,counter);
+					printf("\n");
 					break;
 				}
 			case BAD:

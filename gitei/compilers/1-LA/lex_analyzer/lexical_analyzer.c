@@ -14,29 +14,32 @@ typedef enum State State;
 char ch;
 FILE *fp;
 FILE *fo;
-int counter, lcounter=1, token=0, btoken=0, delimflag;
+int counter, lcounter, token, uncharflag, delimflag, p=0;
+
+char tokenbuff[100];
 
 void scanner();
 
-void dbg(char* prn)
+void dbg(char *prn)
 {
-	printf("%s", prn);
+//	printf("%s", prn);
 }
 
 int main(int argc, char** argv)
 {
 	fp=fopen("./input.txt","r");
 	fo=fopen("./output.txt","w");
-
 	if (fp==NULL) return 1;
 
+	lcounter=1;
 	ch=fgetc(fp);
 
 	while (ch!=EOF)
 	{
-		if(ch==' '||ch=='\n'||ch=='\t')
+		if(ch==' '||ch=='\n'||ch=='\t')				//skip white spaces
 		{
-			dbg("[SKIP white spaces]\n");
+			if(uncharflag==1){uncharflag=0;printf("\n");}
+			dbg("Skipping White Spaces\n");
 			while (ch==' '||ch=='\n'||ch=='\t')
 			{
 				if (ch=='\n'){lcounter++;}
@@ -45,21 +48,18 @@ int main(int argc, char** argv)
 		}
 		else if ((ch>='0'&&ch<='9')||(ch>='a'&&ch<='z')||(ch>='A'&&ch<='Z')||ch=='+'||ch=='-'||ch=='*'||ch=='/'||ch=='%'||ch=='='||ch=='.'||ch=='_'||ch=='\''||ch=='\"'||ch=='#')
 		{
-			scanner(); continue;
+			if(uncharflag==1){uncharflag=0;printf("\n");}
+			scanner(); continue;		//start scanning if you find a valid character
 		}
 		else
 		{
-			printf(RED "[Fatal Error - Unknown Token] (line:%d): " RESET,lcounter);
-			while (ch!=' '&&ch!='\n'&&ch!='\t')
-			{
-				printf("%c",ch);
-				ch=fgetc(fp);
-			}
-			printf("\n");
+			if(uncharflag==0)printf(RED "[Fatal Error] Unknown Characters: (line:%d): " RESET,lcounter);	//block uknown characters
+			uncharflag=1;
+			printf("%c",ch);
+			ch=fgetc(fp);
 		}
 	}
-	
-	printf("\n");
+
 	fclose(fp);
 	fclose(fo);
 	return 0;
@@ -69,7 +69,6 @@ void scanner()
 {
 	dbg("Scanning.. ");
 	State currSt=Q0;
-	State prevSt;
 	counter=0;
 	while(1)
 	{
@@ -78,7 +77,6 @@ void scanner()
 			case Q0:
 				{
 					dbg("[Q0] ");
-					prevSt=Q0;
 					if (ch=='/'){currSt=O3; break;}
 					else if (ch=='*'){currSt=O2; break;}
 					else if (ch=='%'){currSt=O1; break;}
@@ -96,7 +94,6 @@ void scanner()
 			case O0:
 				{
 					dbg("[O0] ");
-					prevSt=O0;
 					if (ch=='0'){currSt=I0; break;}
 					else if ((ch>='1')&&(ch<='9')){currSt=I1; break;}
 					else if (ch=='.'){currSt=E1; break;}
@@ -177,7 +174,7 @@ void scanner()
 			case V0:
 				{
 					dbg("[V0] ");
-					if ((ch>='a'&&ch<='z')||(ch>=0x41&&ch<=0x5A)||(ch>='0'&&ch<='9')||(ch=='_')){currSt=V0; break;}
+					if ((ch>='a'&&ch<='z')||(ch>='A'&&ch<='Z')||(ch>='0'&&ch<='9')||(ch=='_')){currSt=V0; break;}
 					else {currSt=GOOD; token=4; break;}
 				}
 			case S0:
@@ -214,26 +211,26 @@ void scanner()
 					dbg("[E0] ");
 					if ((ch>='0')&&(ch<='9')){currSt=E0; break;}
 					else if (ch=='.'){currSt=F0; break;}
-					else {currSt=BAD; btoken=1; break;}
+					else {currSt=BAD; token=11; break;}
 				}
 			case E1:
 				{
 					dbg("[E1] ");
 					if ((ch>='0')&&(ch<='9')){currSt=F1; break;}
-					else {currSt=BAD; btoken=2; break;}
+					else {currSt=BAD; token=11; break;}
 				}
 			case E2:
 				{
 					dbg("[E2] ");
 					if ((ch>='0')&&(ch<='9')){currSt=F2; break;}
 					else if ((ch=='+')||(ch=='-')){currSt=E3; break;}
-					else {currSt=BAD; btoken=3; break;}
+					else {currSt=BAD; token=11; break;}
 				}
 			case E3:
 				{
 					dbg("[E3] ");
 					if ((ch>='0')&&(ch<='9')){currSt=F2; break;}
-					else {currSt=BAD; btoken=4; break;}
+					else {currSt=BAD; token=11; break;}
 				}
 			case E4:
 				{
@@ -241,7 +238,7 @@ void scanner()
 					if ((ch==0x20)||(ch==0x21)||(ch>=0x23&&ch<=0x5B)||(ch>=0x5D&&ch<=0x7E)){delimflag=0;currSt=E6;break;}
 					else if (ch=='\\'){delimflag=1; currSt=E6; break;}
 					else if (ch=='\"'){if(delimflag==1){delimflag=0;currSt=E6;break;}else{currSt=S2;break;}}
-					else {currSt=BAD; btoken=5; break;}
+					else {currSt=BAD; token=12; break;}
 				}
 			case E5:
 				{
@@ -249,7 +246,7 @@ void scanner()
 					if ((ch>=0x20&&ch<=0x26)||(ch>=0x28&&ch<=0x5B)||(ch>=0x5D&&ch<=0x7E)){delimflag=0;currSt=E5;break;}
 					else if (ch=='\\'){delimflag=1; currSt=E5; break;}
 					else if (ch=='\''){if(delimflag==1){delimflag=0;currSt=E5;break;}else{currSt=S0;break;}}
-					else {currSt=BAD; btoken=6; break;}
+					else {currSt=BAD; token=12; break;}
 				}
 			case E6:
 				{
@@ -257,28 +254,28 @@ void scanner()
 					if ((ch==0x20)||(ch==0x21)||(ch>=0x23&&ch<=0x5B)||(ch>=0x5D&&ch<=0x7E)){delimflag=0;currSt=E6;break;}
 					else if (ch=='\\'){delimflag=1; currSt=E6; break;}
 					else if (ch=='\"'){if(delimflag==1){delimflag=0;currSt=E6;break;}else{currSt=S1;break;}}
-					else {currSt=BAD; btoken=7; break;}
+					else {currSt=BAD; token=12; break;}
 				}
 			case E7:
 				{
 					dbg("[E7] ");
-					if ((ch>=0x23&&ch<=0x7E)||(ch==' ')||(ch=='!')||(ch=='\n')){if(ch=='\n'){lcounter++;}currSt=E7; break;}
+					if ((ch>=0x23&&ch<=0x7E)||(ch==' ')||(ch=='!')||(ch=='\n')||(ch=='\t')){if(ch=='\n'){lcounter++;}currSt=E7; break;}
 					else if (ch=='\"'){currSt=E8; break;}
-					else {currSt=BAD; btoken=8; break;}
+					else {currSt=BAD; token=12; break;}
 				}
 			case E8:
 				{
 					dbg("[E8] ");
-					if ((ch>=0x23&&ch<=0x7E)||(ch==' ')||(ch=='!')||(ch=='\n')){if(ch=='\n'){lcounter++;}currSt=E7; break;}
+					if ((ch>=0x23&&ch<=0x7E)||(ch==' ')||(ch=='!')||(ch=='\n')||(ch=='\t')){if(ch=='\n'){lcounter++;}currSt=E7; break;}
 					else if (ch=='\"'){currSt=E9; break;}
-					else {currSt=BAD; btoken=9; break;}
+					else {currSt=BAD; token=12; break;}
 				}
 			case E9:
 				{
 					dbg("[E9] ");
-					if ((ch>=0x23&&ch<=0x7E)||(ch==' ')||(ch=='!')||(ch=='\n')){if(ch=='\n'){lcounter++;}currSt=E7; break;}
+					if ((ch>=0x23&&ch<=0x7E)||(ch==' ')||(ch=='!')||(ch=='\n')||(ch=='\t')){if(ch=='\n'){lcounter++;}currSt=E7; break;}
 					else if (ch=='\"'){currSt=C1; break;}
-					else {currSt=BAD; btoken=8; break;}
+					else {currSt=BAD; token=12; break;}
 				}
 			case GOOD:
 				{
@@ -302,7 +299,12 @@ void scanner()
 				{
 					dbg(" ---> ");
 					currSt=FOUND;
-					printf("\tBAD: line=%d, chars=%d\n",lcounter,counter);
+					if(token==11)
+						printf("\t" RED "[Fatal Error] Bad Number" RESET "(%d chars) (line:%d)\n",counter,lcounter);
+					else if(token==12)
+						printf("\t" RED "[Fatal Error] Bad String" RESET "(%d chars) (line:%d)\n",counter,lcounter);
+					else
+						printf("\t" RED "[Fatal Error] Bad Token" RESET "(%d chars) (line:%d)\n",counter,lcounter);
 					break;
 				}
 			case FOUND:

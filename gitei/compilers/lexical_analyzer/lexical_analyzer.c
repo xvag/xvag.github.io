@@ -14,9 +14,7 @@ typedef enum State State;
 char ch;
 FILE *fp;
 FILE *fo;
-int counter, lcounter, token, uncharflag, delimflag, p=0;
-
-char tokenbuff[100];
+int counter, lcounter, token, uncharflag, delimflag;
 
 void scanner();
 
@@ -53,13 +51,12 @@ int main(int argc, char** argv)
 		}
 		else
 		{
-			if(uncharflag==0)printf(RED "[Fatal Error] Unknown Characters: (line:%d): " RESET,lcounter);	//block uknown characters
+			if(uncharflag==0)printf(RED "[Fatal Error] Unknown Characters: (line:%d): " RESET,lcounter);	//block unknown characters
 			uncharflag=1;
 			printf("%c",ch);
 			ch=fgetc(fp);
 		}
 	}
-
 	fclose(fp);
 	fclose(fo);
 	return 0;
@@ -174,7 +171,7 @@ void scanner()
 			case V0:
 				{
 					dbg("[V0] ");
-					if ((ch>='a'&&ch<='z')||(ch>='A'&&ch<='Z')||(ch>='0'&&ch<='9')||(ch=='_')){currSt=V0; break;}
+					if ((ch>='a'&&ch<='z')||(ch>='A'&&ch<='Z')||(ch>='0'&&ch<='9')||(ch=='_')){currSt=V0;break;}
 					else {currSt=GOOD; token=4; break;}
 				}
 			case S0:
@@ -313,6 +310,9 @@ void scanner()
 				}
 		}
 		if (currSt==FOUND){break;}
-		else if ((currSt!=GOOD)&&(currSt!=BAD)){printf("%c",ch);ch=fgetc(fp);counter++;}
+		else if (currSt!=GOOD&&currSt!=BAD)
+		{
+			printf("%c",ch);ch=fgetc(fp);counter++;
+		}
 	}
 }

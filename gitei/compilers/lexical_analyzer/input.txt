@@ -1,0 +1,7 @@
+int x;
+float y, AB;
+str string1="hello";
+
+printf("this is a string: \"%s\"",string1);
+x+=5;
+y=.9e-6+AB9_;

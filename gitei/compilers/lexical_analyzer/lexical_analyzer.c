@@ -7,7 +7,7 @@
 #define CYN "\x1B[36m"
 #define RESET "\x1B[0m"
 
-enum State {Q0, O0, O1, O2, O3, O4, O5, O6, I0, I1, F0, F1, F2, F3, V0, S0, S1, S2, C0, C1,\
+enum State {Q0, O0, O1, O2, O3, O4, O5, O6, I0, I1, F0, F1, F2, V0, S0, S1, S2, C0, C1,\
        	E0, E1, E2, E3, E4, E5, E6, E7, E8, E9, GOOD, FOUND, BAD};
 typedef enum State State;
 

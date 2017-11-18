@@ -391,6 +391,8 @@ void scanner()
 			case BAD:
 				// Antistoixa h periptosi BAD ektyponei ton typo tou lathous ksexorizontas 2 katastaseis (mia gia arithmous kai mia gia strings)
 				// enw an den epiptei to lathos se kapoia apo tis dyo ektiponei apla Bad Token
+				// Ousiastika h periptosi BAD se synartisi me to if ths main pou vriskei tous agnostous xaraktires
+				// leitourgei san th routina Syntax Error pou zhteitai sthn ergasia
 				{
 					dbg(" ---> ");
 					badtokens++;

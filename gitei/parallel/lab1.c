@@ -3,105 +3,115 @@
 
 int main(int argc, char** argv)
 {
-	int my_rank, rank;
-	int p,k,num;
-	int sum,finsum;
-	float sum2,finsum2;
-	int tag1=10,tag2=20,tag3=30,tag4=40,tag5=50,tag6=60,tag7=70,tag8=80,tag9=90;
-	int n;
-	float m;
-	float var;
+	int tag1=10,tag2=20,tag3=30,tag4=40,tag5=50,tag6=60,tag7=70,tag8=80,tag9=90,tag10=100;
+	int i, my_rank, rank;
+	
+	int p; // number of processors/nodes
+	int n; // number of integers stored in vector X
+	int nperp; // numbers per processor
 
-	int max,min;
-	int max_x[10];
-	int min_x[10];
+	float m; // average
+	float var; // diaspora
+	int min,max; // min and max values of vector X
 
-	int x[100];
-	int x_loc[100];
-	float d[100];
+	int min_x[3]; // temporary tables for storing min and max values.
+	int max_x[3]; // one position for every processor. supports up to 4 processors.
+
+	int x[100]; // vector X
+	float d[100]; // vector D
 
 	MPI_Status status;
-
 	MPI_Init(&argc,&argv);
 	MPI_Comm_rank(MPI_COMM_WORLD,&my_rank);
 	MPI_Comm_size(MPI_COMM_WORLD,&p);
 
 	if(my_rank==0)
 	{
-		printf("Dose plithos aritmon:\n");
+		// Proc 0 reads number of integers and stores them in vector X.
+		printf("Give number of elements for vector x:\n");
 		scanf("%d",&n);
-		printf("Dose tous %d arithmous:\n",n);
-		for(k=0;k<n;k++)
-			scanf("%d",&x[k]);
+		printf("Give %d numbers:\n",n);
+		for(i=0;i<n;i++)
+			scanf("%d",&x[i]);
 
-		num=n/p;
-		for(rank=1;rank<p;rank++)
-			MPI_Send(&num,1,MPI_INT,rank,tag1,MPI_COMM_WORLD);
-		
-		k=num;
+		// Proc 0 calculates numbers per processor and sends values to other
+		// procs. 
+		nperp=n/p;		
 		for(rank=1;rank<p;rank++)
 		{
-			MPI_Send(&x[k],num,MPI_INT,rank,tag2,MPI_COMM_WORLD);
-			k+=num;
+			MPI_Send(&nperp,1,MPI_INT,rank,tag1,MPI_COMM_WORLD);
+			MPI_Send(&x[rank*nperp],nperp,MPI_INT,rank,tag2,MPI_COMM_WORLD);
 		}
-
-		for(k=0;k<num;k++)
-			x_loc[k]=x[k];
 	}
 	else
 	{
-		MPI_Recv(&num,1,MPI_INT,0,tag1,MPI_COMM_WORLD,&status);
-		MPI_Recv(&x_loc[0],num,MPI_INT,0,tag2,MPI_COMM_WORLD,&status);
+		// Other procs (not 0) receive values of nperp and the part of vector X
+		// that they should use to make calculations.
+		MPI_Recv(&nperp,1,MPI_INT,0,tag1,MPI_COMM_WORLD,&status);
+		MPI_Recv(&x[my_rank*nperp],nperp,MPI_INT,0,tag2,MPI_COMM_WORLD,&status);
 	}
 
-	sum=0;
-	min_x[my_rank]=x_loc[0];
-	max_x[my_rank]=x_loc[0];
-	for(k=0;k<num;k++)
+	// Calculations executed by all procs
+	int sum=0;
+	int v=my_rank*nperp; // position in vector for each processor
+	min_x[my_rank]=x[v];
+	max_x[my_rank]=x[v];
+	for(i=0;i<nperp;i++)
 	{
-		sum+=x_loc[k];
+		// Sum to be used for calculating Average.
+		sum+=x[v+i];
 
-		if(x_loc[k]<min_x[my_rank])
-			min_x[my_rank]=x_loc[k];
+		// Each proc finds min/max values for the portion of the vector X
+		// that belongs to it and stores them in vectors min_x and max_x 
+		// in the positions accordingly to their ranks.
+		if(x[v+i]<min_x[my_rank])
+			min_x[my_rank]=x[v+i];
 
-		if(x_loc[k]>max_x[my_rank])
-			max_x[my_rank]=x_loc[k];
+		if(x[v+i]>max_x[my_rank])
+			max_x[my_rank]=x[v+i];
 	}
+	// End of calculations executed by all procs
 	
+
 	if(my_rank!=0)
 	{
+		// Other procs (not 0) send their results.
 		MPI_Send(&sum,1,MPI_INT,0,tag3,MPI_COMM_WORLD);
 		MPI_Send(&min_x[my_rank],1,MPI_INT,0,tag6,MPI_COMM_WORLD);
 		MPI_Send(&max_x[my_rank],1,MPI_INT,0,tag7,MPI_COMM_WORLD);
 	}
 	else
 	{
-		finsum=sum;
+		// Proc 0 initializes final values with its results.
+		int finsum=sum;
 		min=min_x[0];
 		max=max_x[0];
-		printf("Calculating average: Result of process %d: %d\n",my_rank,sum);
+		printf("Calculating average: Process %d: %d\n",my_rank,sum);
+		printf("Calculating min/max: Process %d: min:%d max:%d\n",my_rank,min_x[0],max_x[0]);
+
+		// Proc 0 receives results from other procs and produces the final results.
 		for(rank=1;rank<p;rank++)
 		{
 			MPI_Recv(&min_x[rank],1,MPI_INT,rank,tag6,MPI_COMM_WORLD,&status);
 			MPI_Recv(&max_x[rank],1,MPI_INT,rank,tag7,MPI_COMM_WORLD,&status);
 			MPI_Recv(&sum,1,MPI_INT,rank,tag3,MPI_COMM_WORLD,&status);
 			finsum=finsum+sum;
-			printf("Calculating average: Result of process %d: %d\n",rank,sum);
+			printf("Calculating average: Process %d: %d\n",rank,sum);	
+			printf("Calculating min/max: Process %d: min:%d max:%d\n",rank,min_x[rank],max_x[rank]);
+			// Proc 0 calculates final min and max values.
 			if(min_x[rank]<min)
 				min=min_x[rank];
 			if(max_x[rank]>max)
 				max=max_x[rank];
 		}
+		
+		// Proc 0 calculates final value of Average.
 		m = (float) finsum/ (float) n;
-		printf("Average= %f\n",m);
 
-		int i;
-		for(i=0;i<p;i++)
-			printf("min:%d max:%d\n",min_x[i],max_x[i]);
+		// Proc 0 prints final values.
+		printf("\nAverage = %.2f\nMIN = %d\nMAX = %d\n\n",m,min,max);
 
-		printf("MIN=%d\n",min);
-		printf("MAX=%d\n",max);
-
+		// Proc 0 sends final results of Average and min/max to other procs.
 		for(rank=1;rank<p;rank++)
 		{
 			MPI_Send(&m,1,MPI_FLOAT,rank,tag4,MPI_COMM_WORLD);
@@ -112,39 +122,53 @@ int main(int argc, char** argv)
 
 	if(my_rank!=0)
 	{
+		// Other procs (not 0) receive final results of Average and min/max values.
 		MPI_Recv(&m,1,MPI_FLOAT,0,tag4,MPI_COMM_WORLD,&status);
 		MPI_Recv(&min,1,MPI_INT,0,tag8,MPI_COMM_WORLD,&status);
 		MPI_Recv(&max,1,MPI_INT,0,tag9,MPI_COMM_WORLD,&status);
 	}		
 
 
-	sum2=0.0;
-	for(k=0;k<num;k++)
+	// Calculations executed by all procs
+	float sum2=0.0;
+	for(i=0;i<nperp;i++)
 	{
-		sum2+=(((float)x_loc[k]-m)*((float)x_loc[k]-m));
-		d[k]=((float)x_loc[k]/((float)max-(float)min))*(float)100;
-		printf("%f ",d[k]);
+		// Sum to be used for calculating Diaspora
+		sum2+=(((float)x[v+i]-m)*((float)x[v+i]-m));
+		// Creating vector D. Each proc manipulates different part of the vector.
+		d[v+i]=((float)x[v+i]/((float)max-(float)min))*100.0;
 	}
+	// End of calculations executed by all procs
 
 	if(my_rank!=0)
+	{
+		// Other procs (not 0) send their results.
 		MPI_Send(&sum2,1,MPI_FLOAT,0,tag5,MPI_COMM_WORLD);
+		MPI_Send(&d[v],nperp,MPI_FLOAT,0,tag10,MPI_COMM_WORLD);
+	}
 	else
 	{
-		finsum2=sum2;
-		printf("Calculating diaspora: Result of process %d: %f\n",my_rank,sum2);
+		// Proc 0 initializes final value for diaspora with its result.
+		float finsum2=sum2;
+		printf("Calculating diaspora: Process %d: %.2f\n",my_rank,sum2);
+		// Proc 0 receives results from other procs and produces final results for diaspora.
 		for(rank=1;rank<p;rank++)
 		{
 			MPI_Recv(&sum2,1,MPI_FLOAT,rank,tag5,MPI_COMM_WORLD,&status);
+			MPI_Recv(&d[rank*nperp],nperp,MPI_FLOAT,rank,tag10,MPI_COMM_WORLD,&status);
 			finsum2=finsum2+sum2;
-			printf("Calculating Diaspora: Result of process %d: %f\n",rank,sum2);
+			printf("Calculating Diaspora: Process %d: %.2f\n",rank,sum2);
 		}
+		// Proc 0 calculates and prints final value of Diaspora.
 		var=finsum2/(float)n;
-		printf("Diaspora= %f\n",var);
-	}
+		printf("\nDiaspora = %.2f\n",var);
 
-	int r;
-	for(r=0;r<n;r++)
-		printf("\n%f \n",d[r]);
+		// Proc 0 prints vector D.
+		printf("\nVector D: \n");
+		for(i=0;i<n;i++)
+			printf("D[%d] = %.2f%\n",i,d[i]);
+
+	}
 	
 	MPI_Finalize();
 	return 0;

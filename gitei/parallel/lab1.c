@@ -136,7 +136,7 @@ int main(int argc, char** argv)
 		// Sum to be used for calculating Diaspora
 		sum2+=(((float)x[v+i]-m)*((float)x[v+i]-m));
 		// Creating vector D. Each proc manipulates different part of the vector.
-		d[v+i]=((float)x[v+i]/((float)max-(float)min))*100.0;
+		d[v+i]=(((float)x[v+i]-(float)min)/((float)max-(float)min))*100.0;
 	}
 	// End of calculations executed by all procs
 

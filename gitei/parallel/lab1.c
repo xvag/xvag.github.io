@@ -150,7 +150,7 @@ int main(int argc, char** argv)
 	{
 		// Proc 0 initializes final value for diaspora with its result.
 		float finsum2=sum2;
-		printf("Calculating diaspora: Process %d: %.2f\n",my_rank,sum2);
+		printf("Calculating diaspora: Process %d: %.2f\n",my_rank,sum2);		
 		// Proc 0 receives results from other procs and produces final results for diaspora.
 		for(rank=1;rank<p;rank++)
 		{

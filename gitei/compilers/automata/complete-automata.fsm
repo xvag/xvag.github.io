@@ -6,28 +6,42 @@ Q0:	#	-> C0
 	1-9	-> I1
 	.	-> E1
 	=	-> O6
-	+ \-	-> O0
-	%	-> O1
+	+	-> O0
+	\-	-> O1
 	\*	-> O2
 	/	-> O3
+	%	-> O4
+	=	-> O14
 O0:	0	-> I0
+	1-9	-> I1
+	.	-> E1
+	=	-> O5
+	\n	-> GOOD
+O1:	0	-> I0
 	1-9	-> I1
 	.	-> E1
 	=	-> O6
 	\n	-> GOOD
-O1:	=	-> O6
+O2:	\*	-> O7
+	=	-> O11
 	\n	-> GOOD
-O2:	=	-> O6
-	\*	-> O4
+O3:	/	-> O8
+	=	-> O13
 	\n	-> GOOD
-O3:	/	-> O5
-	=	-> O6
+O4:	=	-> O9
 	\n	-> GOOD
-O4:	=	-> O6
-	\n	-> GOOD
-O5:	=	-> O6
-	\n	-> GOOD
+O5:	\n	-> GOOD
 O6:	\n	-> GOOD
+O7:	=	-> O10
+	\n	-> GOOD
+O8:	=	-> O12
+	\n	-> GOOD
+O9:	\n	-> GOOD
+O10:	\n	-> GOOD
+O11:	\n	-> GOOD
+O12:	\n	-> GOOD
+O13:	\n	-> GOOD
+O14:	\n	-> GOOD
 I0:	0-9	-> E0
 	.	-> F0
 	\n	-> GOOD

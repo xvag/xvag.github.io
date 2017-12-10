@@ -2,7 +2,7 @@ import static java.lang.System.*;
 
 class Airplane {
 	private static int totalSeats;
-	private static int capacity = 10;
+	private int capacity = 10;
 	private static String[] Bookings = new String[100];
 	
 	public Airplane() {
@@ -37,6 +37,8 @@ class Airplane {
 	}
 }
 
+
+
 class BookingAgent implements Runnable {
 	private Thread  agentThread;
 	private Airplane airplane;
@@ -61,24 +63,26 @@ class BookingAgent implements Runnable {
 	}
 	
 	public void run() {
-		try {
-		for (int k=0; k<10; k++) { //while(airplane.getTotalSeats()<airplane.getCapacity()) {
-			if(airplane.getSeat(Bname)==1) {
-				myseats += 1;}			
-			//	out.println("Agent("+Bname+") total seats: "+airplane.getTotalSeats());
-			//else 
-			//	out.println("Agent("+Bname+") no more seats");
-			Thread.sleep(50);
-		}
-		} catch (InterruptedException e) {
-			out.println("Agent("+Bname+") interrupted");
-		}
+		for (int k=0; k<10; k++) 
+			getMySeat();
 		out.println(Bname+" myseats="+myseats);
+	}	
+	
+	synchronized public void getMySeat() {
+		if(airplane.getSeat(Bname)==1)
+			myseats+=1;
+		else
+			out.println("Agent ("+Bname+") no more seats");
+		try {
+			Thread.sleep(50);
+		} catch (InterruptedException e) {};
 	}
 }
 
+
+
 class Air {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException{
 		Airplane park = new Airplane();
 		BookingAgent t1 = new BookingAgent("T1",park);
 		BookingAgent t2 = new BookingAgent("T2",park);
@@ -86,8 +90,11 @@ class Air {
 		
 		
 		t1.start();
-		//t2.start();
-		//t3.start();
+		t2.start();
+		t3.start();
+		
+		Thread.sleep(5000);
+
 		
 		park.getBookings();
 		

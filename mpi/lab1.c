@@ -1,3 +1,9 @@
+// This program reads n integers and stores them in vector X
+// Then it calculates:
+// the average m = x[0]+x[1]+x[2]+...+x[n-1])/n
+// the diaspora var = ((x[0]-m)^2 + (x[1]-m)^2 + (x[2]-m)^2 + ... + (x[n-1]-m)^2)/n
+// and creates a new vector D with values: d[i] = ((x[i]-Xmin)/(Xmax-Xmin))*100
+
 #include <stdio.h>
 #include "mpi.h"
 

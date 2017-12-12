@@ -3,8 +3,12 @@ float y, _AB
 str string1="good string"
 str string2="bad string
 
+print('bad string 2)
+
 x=len(string1)
 type(y)
+
+y = -.e22
 
 x=input('Dose timi gia x:')
 

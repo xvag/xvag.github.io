@@ -9,7 +9,7 @@
 #define CYN "\x1B[36m"
 #define RESET "\x1B[0m"
 
-int lcounter=1, counter=0;
+int lcounter=1, counter=0, space=0;
 %}
 
 EXP [eE]
@@ -41,17 +41,27 @@ printf(BLU"Integer"RESET"(line %d): %s (%d)\n",lcounter, yytext, atoi(yytext));}
 {SIGN}?({DIGIT}+"."{DIGIT}*|"."{DIGIT}+)({EXP}{SIGN}?{DIGIT}+)? {
 printf(BLU"Float"RESET"(line %d): %s (%g)\n",lcounter, yytext, atof(yytext));}
 
+{SIGN}?\.{EXP}?{SIGN}?{DIGIT}* {
+printf(RED"Error: Bad Float"RESET"(line:%d): %s\n",lcounter,yytext);};
+
 "\"".*"\""|"'".*"'" {
 printf(GRN"String"RESET"(line %d): %s\n",lcounter, yytext);}
+
+("\""[^\"\n]*)|("'"[^'\n]*) {
+printf(RED"Error: Bad String"RESET"(line:%d): %s\n", lcounter, yytext);}
 
 {VAR} {
 printf(MAG"Variable"RESET"(line %d): %s\n", lcounter, yytext);}
 
+{DIGIT}+{VAR} {
+printf(RED"Error: Bad Variable name"RESET"(line:%d): %s\n", lcounter, yytext);}
+
 "#".*|"\""{3}[\xA\x20-\x7E]*"\""{3} {
-printf("Comment(line %d): %s\n", lcounter, yytext);}
+printf(YEL"Comment"RESET"(line %d): %s\n", lcounter, yytext);}
 
 
-\n { lcounter++;}
+\n { lcounter++; }
+" " { space++; }
 . { counter++; }
 %%
 
@@ -75,6 +85,7 @@ int main(int argc, char **argv){
 
 	yylex();
 	printf("# of lines = %d\n", lcounter);
-	printf("# of chars = %d\n", counter);
+	printf("# of spaces = %d\n", space);
+	printf("# of unscanned characters = %d\n", counter);
 
 }

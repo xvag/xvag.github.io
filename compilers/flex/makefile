@@ -1,7 +1,6 @@
 all:
-	flex -o flex.c flex.l
-	gcc -o flex -lfl flex.c
-	./flex input.txt
+	flex -o scanner.c scanner.l
+	gcc -o scanner -lfl scanner.c
 
 clean:
-	rm flex flex.c
+	rm scanner scanner.c

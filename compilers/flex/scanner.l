@@ -19,7 +19,7 @@ NOZERO [1-9]
 LOW [a-z]
 CAP [A-Z]
 VAR [a-zA-Z_][a-zA-Z_0-9]*
-OP "+"|"-"|"*"|"/"|"%"|"="|"+="|"-="|"*="|"/="|"%="|"**"
+OP "+"|"-"|"*"|"/"|"%"|"="|"+="|"-="|"*="|"/="|"%="|"**"|"//"|"**="|"//="
 KEPT "int"|"float"|"str"|"len"|"type"|"input"|"print"
 SPECIAL ";"|","|"("|")"|"["|"]"|"{"|"}"
 ALL .
@@ -42,19 +42,19 @@ printf(BLU"Integer"RESET"(line %d): %s (%d)\n",lcounter, yytext, atoi(yytext));}
 printf(BLU"Float"RESET"(line %d): %s (%g)\n",lcounter, yytext, atof(yytext));}
 
 {SIGN}?\.{EXP}?{SIGN}?{DIGIT}* {
-printf(RED"Error: Bad Float"RESET"(line:%d): %s\n",lcounter,yytext);};
+printf(RED"Error: Illegal Float"RESET"(line:%d): %s\n",lcounter,yytext);};
 
 "\"".*"\""|"'".*"'" {
-printf(GRN"String"RESET"(line %d): %s\n",lcounter, yytext);}
+printf(GRN"String"RESET"(line %d): %s\n",lcounter, yytext); }
 
 ("\""[^\"\n]*)|("'"[^'\n]*) {
-printf(RED"Error: Bad String"RESET"(line:%d): %s\n", lcounter, yytext);}
+printf(RED"Error: Illegal String"RESET"(line:%d): %s\n", lcounter, yytext);}
 
 {VAR} {
 printf(MAG"Variable"RESET"(line %d): %s\n", lcounter, yytext);}
 
 {DIGIT}+{VAR} {
-printf(RED"Error: Bad Variable name"RESET"(line:%d): %s\n", lcounter, yytext);}
+printf(RED"Error: Illegal Variable name"RESET"(line:%d): %s\n", lcounter, yytext);}
 
 "#".*|"\""{3}[\xA\x20-\x7E]*"\""{3} {
 printf(YEL"Comment"RESET"(line %d): %s\n", lcounter, yytext);}

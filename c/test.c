@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+/* comments */
+
 void main()
 {
 	int x;

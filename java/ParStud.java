@@ -14,7 +14,7 @@ class Parent extends Thread {
 	public void run() {
 		for (int i=0; i<10; i++) {
 			amount = Math.random()*1000;
-			out.printf("Parent puts %5.2f\n\n",amount);
+			out.printf("Parent puts %5.2f\n",amount);
 			account.put(amount);
 			try {
 				sleep((int)(Math.random()*1000));
@@ -36,8 +36,8 @@ class Student extends Thread {
 	
 	public void run() {
 		for (int i=0; i<10; i++) {
-			amount = Math.random()*500;
-			out.printf("Student tries to get %5.2f\n\n",amount);
+			amount = Math.random()*1000;
+			out.printf("Student tries to get %5.2f\n",amount);
 			amount = account.get(amount);
 		}
 	}
@@ -57,8 +57,11 @@ class Account {
 			} catch (InterruptedException e) {}
 		}
 		available = false;
-		contents -= amount;
-		out.printf("in get - Student got %5.2f - Contents=%8.2f\n",amount,contents);
+		if(amount<contents) {
+			contents -= amount;
+			out.printf("[in Get] - Student got %5.2f - Contents=%5.2f\n",amount,contents);
+		} else
+			out.printf("[in Get] - Can't get %5.2f. Contents=%5.2f.(Learn to hunt and cook)\n",amount,contents);
 		notifyAll();
 		return amount;
 	}
@@ -71,7 +74,7 @@ class Account {
 		}
 		available = true;
 		contents += amount;
-		out.printf("in put - Parent put %5.2f - Contents=%8.2f\n",amount,contents);
+		out.printf("[in Put] - Parent put %5.2f - Contents=%8.2f\n",amount,contents);
 		notifyAll();
 	}
 	

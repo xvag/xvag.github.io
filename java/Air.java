@@ -29,7 +29,8 @@ class Airplane {
 	
 	public void getBookings()
 	{
-		out.println("total seats booked = "+totalSeats);
+		out.println("Bookings Records");
+		out.println("Total seats booked = "+totalSeats);
 		for(int i=0; i<totalSeats; i++)
 		{
 			out.println("Seat:"+i+" booked by "+Bookings[i]);
@@ -65,17 +66,23 @@ class BookingAgent implements Runnable {
 	public void run() {
 		for (int k=0; k<10; k++) 
 			getMySeat();
-		out.println(Bname+" myseats="+myseats);
+		//out.println(Bname+" myseats="+myseats);
 	}	
 	
 	synchronized public void getMySeat() {
-		if(airplane.getSeat(Bname)==1)
+		if(airplane.getSeat(Bname)==1) {
+			out.println("Agent("+Bname+"): I booked a seat");
 			myseats+=1;
+		}
 		else
-			out.println("Agent ("+Bname+") no more seats");
+			out.println("Agent("+Bname+"): no more seats");
 		try {
 			Thread.sleep(50);
 		} catch (InterruptedException e) {};
+	}
+	
+	public void getMyBookings() {
+		out.println("Agent("+Bname+"): I have booked "+myseats+" seats.");
 	}
 }
 
@@ -93,9 +100,14 @@ class Air {
 		t2.start();
 		t3.start();
 		
-		Thread.sleep(5000);
-
+		Thread.sleep(1000);
 		
+		out.println();
+		t1.getMyBookings();
+		t2.getMyBookings();
+		t3.getMyBookings();
+
+		out.println();
 		park.getBookings();
 		
 	}

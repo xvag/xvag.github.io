@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "mpi.h"
 
 int main(int argc, char** argv) {
@@ -10,12 +11,12 @@ int main(int argc, char** argv) {
 	int i, j;
 	int k, l, x, y;
 
-	int C[10000];
-	int D[10000];
-	int C_loc[10000];
-	int D_loc[10000];
-	int CD[10000];
-	int CD_loc[10000];
+	int *C;
+	int *D;
+	int *C_loc;
+	int *D_loc;
+	int *CD;
+	int *CD_loc;
 
 	char proc_name[MPI_MAX_PROCESSOR_NAME];
 	int namelen;
@@ -28,6 +29,9 @@ int main(int argc, char** argv) {
 	if(my_rank==0) {
 		printf("Give N: \n");
 		scanf("%d",&n);
+		
+		C = (int *)malloc(n*n*sizeof(int));
+		D = (int *)malloc(n*n*sizeof(int));
 
 		for (i=0; i<n*n; i++) {
 			C[i] = i+1;
@@ -54,6 +58,7 @@ int main(int argc, char** argv) {
 
 	nperp = n/p;
 	q = nperp*n;
+	C_loc = (int *)malloc(q*sizeof(int));
 
 	MPI_Scatter(C, q, MPI_INT, C_loc, q, MPI_INT, 0, MPI_COMM_WORLD);
 

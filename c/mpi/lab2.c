@@ -42,9 +42,13 @@ int main(int argc, char** argv) {
 	MPI_Get_processor_name(proc_name, &namelen);
 
 	if(my_rank==0) {
-		printf("Give N: \n");
+		printf("Give N:\n");
 		scanf("%d",&n);
-		printf("Enter option: \n");
+		printf("1. C(NxN) + D(NxN)\n");
+		printf("2. C(NxN) * B(Nx1)\n");
+		printf("3. A(1xN) * B(Nx1)\n");
+		printf("4. B(Nx1) * A(1xN)\n");
+		printf("Select Calculation (1-4):\n");
 		scanf("%d", &opt);
 		
 		if (opt==1) {
@@ -76,10 +80,19 @@ int main(int argc, char** argv) {
 				}
 			}
 			// print table C
+			printf("\n\nTable C(NxN):");
 			for (i=0; i<n; i++){
 				printf("\n");
 				for (j=0; j<n; j++)
 					printf("%3d ", C[i][j]);
+			}
+
+			// print table D
+			printf("\n\nTable D(NxN):");
+			for (i=0; i<n; i++){
+				printf("\n");
+				for (j=0; j<n; j++)
+					printf("%3d ", D[i][j]);
 			}
 		}else if (opt==2) {
 			// allocate mem for two tables. One 2D and one 1D.
@@ -101,10 +114,12 @@ int main(int argc, char** argv) {
 					C[i][j] = i*10+j+1;
 			}
 			
-			//print the tables.
+			// print the tables.
+			printf("\n\nTable B(Nx1):\n");
 			for (i=0; i<n; i++)
 				printf("%3d\n", B[i]);
 
+			printf("\n\nTable C(NxN):\n");
 			for (i=0; i<n; i++) {
 				printf("\n");
 				for (j=0; j<n; j++)
@@ -112,42 +127,55 @@ int main(int argc, char** argv) {
 			}
 
 		}else if (opt==3) {
+			// allocate mem for the tables.
 			A2 = (int *)malloc(n*sizeof(int));
 			B2 = (int *)malloc(n*sizeof(int));
 
+			// fill the tables with values.
 			for (i=0; i<n; i++) {
 				A2[i] = i+1;
 				B2[i] = i+1;
 			}
-
+		
+			// print the tables.
+			printf("\n\nTable A(1xN):\n");
 			for (i=0; i<n; i++)
 				printf("%d ", A2[i]);
 			printf("\n");
+
+			printf("\n\nTable B(Nx1):\n");
 			for (i=0; i<n; i++)
 				printf("%d\n", B2[i]);
 
 		}else if (opt==4) {
+			// allocate mem for table A and BA for the result.
 			A2 = (int *)malloc(n*sizeof(int));
 			
 			BA_2D = (int *)malloc(n*n*sizeof(int));
 			BA = malloc(n*sizeof(int *));
 
+			// point the pointers for the 2D table BA.
 			for (i=0; i<n; i++)
 				BA[i] = BA_2D + (i*n);
-			
+
+			// fill tables A and B with values.			
 			for (i=0; i<n; i++) {
 				A2[i] = i+1;
 				B[i] = i+1;
 			}
 
+			// print the tables.
+			printf("\n\nTable A(1xN)\n");
 			for (i=0; i<n; i++)
 				printf("%d ", A2[i]);
 			printf("\n");
+
+			printf("\n\nTable B(Nx1)\n");
 			for (i=0; i<n; i++)
 				printf("%d\n", B[i]);
 
 		}else{
-			printf("NO opt\n");
+			printf("Wrong option\n");
 		}
 	}
 
@@ -163,17 +191,6 @@ int main(int argc, char** argv) {
 		MPI_Scatter(C_2D, q, MPI_INT, C_loc, q, MPI_INT, 0, MPI_COMM_WORLD);
 		MPI_Scatter(D_2D, q, MPI_INT, D_loc, q, MPI_INT, 0, MPI_COMM_WORLD);
 
-		sleep(my_rank);
-		printf("\nProc [%d]", my_rank);
-		for (i=0; i<q; i++){
-			if (i%n==0)
-				printf("\n");
-			printf(" %d", C_loc[i]);
-		//	printf("Proc(%d): %d \n",my_rank, C_loc[i]);
-			//sleep(my_rank);
-		}
-		printf("\n");
-		
 		CD_loc = (int *)malloc(q*sizeof(int));
 		for (i=0; i<q; i++)
 			CD_loc[i] = C_loc[i] + D_loc[i];
@@ -194,22 +211,6 @@ int main(int argc, char** argv) {
 		MPI_Scatter(C_2D, q, MPI_INT, C_loc, q, MPI_INT, 0, MPI_COMM_WORLD);
 		MPI_Bcast(B, n, MPI_INT, 0, MPI_COMM_WORLD);
 		
-		sleep(my_rank);
-		printf("\nProc [%d]", my_rank);
-		for (i=0; i<q; i++){
-			if (i%n==0)
-				printf("\n");
-			printf(" %d", C_loc[i]);
-		}
-		printf("\n");
-
-		sleep(my_rank);
-		printf("\nProc [%d]", my_rank);
-		for (i=0; i<n; i++)
-			printf("%d\n", B[i]);
-
-		printf("\n");
-
 		CB_loc = (int *)malloc(nperp*sizeof(int));
 		for (i=0; i<nperp; i++) {
 			CB_loc[i] = 0;
@@ -232,16 +233,6 @@ int main(int argc, char** argv) {
 		
 		MPI_Scatter(A2, nperp, MPI_INT, A_loc, nperp, MPI_INT, 0, MPI_COMM_WORLD);
 		MPI_Scatter(B2, nperp, MPI_INT, B_loc, nperp, MPI_INT, 0, MPI_COMM_WORLD);
-
-		sleep(my_rank);
-		printf("\nProc [%d]", my_rank);
-		for (i=0; i<nperp; i++)
-			printf("%d\n", A_loc[i]);
-
-		sleep(my_rank);
-		printf("\nProc [%d]", my_rank);
-		for (i=0; i<nperp; i++)
-			printf("%d\n", B_loc[i]);
 
 		AB_loc=0;
 		for(i=0; i<nperp; i++)

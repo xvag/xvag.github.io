@@ -57,7 +57,10 @@ NOZERO [1-9]
 LOW [a-z]
 CAP [A-Z]
 VAR [a-zA-Z_][a-zA-Z_0-9]*
-OP "-"|"*"|"/"|"%"|"+="|"-="|"*="|"/="|"%="|"**"|"//"|"**="|"//="
+
+OP "+"|"-"|"*"|"/"|"%"|"**"|"//"
+ASSIGN_OP "+="|"-="|"*="|"/="|"%="|"**="|"//="
+
 DECL_TYPE "int"|"float"|"str"
 FUNC "type"|"len"|"print"|"input"
 SPECIAL ";"|","|"["|"]"|"{"|"}"
@@ -71,16 +74,24 @@ ALL .
 
 %%
 
+"#".*|"\""{3}[\xA\x20-\x7E]*"\""{3} {
+//printf(YEL"Comment"RESET"(line %d): %s\n", lcounter, yytext);
+}
+
 {FUNC} {printf("%s", yytext); return FUNC; }
 
 "(" { printf("("); return '('; }
 ")" { printf(")"); return ')'; }
 "," { printf(","); return ','; }
 "=" { printf("="); return '='; }
-"+" { printf("+"); return '+'; }
 
 {OP} {
-printf(CYN"Operator"RESET"(line %d): %s\n",lcounter, yytext);}
+printf("%s", yytext); 
+return OP; }
+
+{ASSIGN_OP} {
+printf("%s", yytext);
+return ASSIGN_OP;}
 
 {DECL_TYPE} {printf("%s", yytext); return DECL_TYPE;}
 
@@ -96,24 +107,27 @@ printf("%s",yytext);
 return FLOAT;}
 
 {SIGN}?\.{EXP}?{SIGN}?{DIGIT}* {
-printf(RED"\nLexical Error: Illegal Float"RESET"(line:%d): %s\n",lcounter,yytext);};
+printf(RED"\n Lexical Error: Illegal Float"RESET"(line:%d): %s",lcounter,yytext);};
 
 "\"".*"\""|"'".*"'" {
 printf("%s", yytext); 
 return STRING; }
 
+("\""[^\"\n]*)|("'"[^'\n]*) {
+printf(RED"\n Lexical Error: Illegal String"RESET"(line:%d): %s", lcounter, yytext);}
+
 {VAR} {
 printf("%s", yytext); 
 return VAR;}
 
-"#".*|"\""{3}[\xA\x20-\x7E]*"\""{3} {
-printf(YEL"Comment"RESET"(line %d): %s\n", lcounter, yytext);}
+{DIGIT}+{VAR} {
+printf(RED"\n Lexical Error: Illegal Variable name"RESET"(line:%d): %s", lcounter, yytext);}
 
 \n { yylineno++; lcounter++; return NEWLINE; }
 " " { printf("%s", yytext); space++; }
 <<EOF>>		{ printf("\n#FILE ENDED\n%d lines read\n", yylineno-1); return 0; };
 
-. { counter++; }
+. { printf("unscanned %s", yytext); counter++; }
 
 %%
 

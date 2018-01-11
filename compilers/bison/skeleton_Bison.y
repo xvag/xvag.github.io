@@ -36,7 +36,7 @@ extern int yylex();
        perioxi dilosis tokens 
 ________________________________________________*/
 %error-verbose
-%token NEWLINE FUNC
+%token NEWLINE FUNC ASSIGN_OP OP
 %token DECL_TYPE VAR STRING
 %token INT FLOAT
 
@@ -47,7 +47,7 @@ _________________________________________________*/
 
 %left '(' ')'
 %left '+' '-'
-%left '*' '/'
+%left '*' '/' '%'
 %left NEG
 
 /* ______________________________________________
@@ -69,26 +69,32 @@ program:
 	| program codeline
 	;
 
-codeline: NEWLINE
-	| decl NEWLINE {printf("\n### line[%d] ###\n\n", yylineno-1);}
-	| assign NEWLINE {printf("\n### line[%d] ###\n\n", yylineno-1);}
-	| func NEWLINE {printf("\n### line[%d] ###\n\n", yylineno-1);}
+codeline: NEWLINE {printf("\n");}
+	| decl NEWLINE {printf("\n### line[%d] "GRN"OK"RESET" ###\n\n", yylineno-1);}
+	| assign NEWLINE {printf("\n### line[%d] "GRN"OK"RESET" ###\n\n", yylineno-1);}
+	| func NEWLINE {printf("\n### line[%d] "GRN"OK"RESET" ###\n\n", yylineno-1);}
 	| error NEWLINE {errorflag=1; yyerrok;}
 	;
 
-decl:	DECL_TYPE VAR {printf("\nDeclaration");}
-	| DECL_TYPE assign {printf("\nDeclaration with assignment");}
+decl:	DECL_TYPE decl_var {printf("\nDeclaration");}
+	| DECL_TYPE VAR '=' expr {printf("\nDeclaration with assignment");}
 	;
 
-assign: VAR '=' expr {printf("\nExpression Assignment");}
+decl_var: VAR
+	| VAR ',' decl_var
+	;
+
+assign: VAR '=' expr {printf("\nAssignment");}
+	| VAR ASSIGN_OP expr {printf("\nExpression Assignment");}
 	| VAR '=' func {printf("\nFunction with Assignment");}
 	;
 
 expr:	VAR
 	| INT
 	| FLOAT
-	| STRING
-	| expr '+' expr {printf("\nAddition");}
+	| STRING 
+	| '(' expr ')'
+	| expr OP expr {printf("\nArithmetic expression");}
 	;
 
 func:	FUNC '(' VAR ')' {printf("\nPython Function on Variable");}

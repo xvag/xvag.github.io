@@ -70,23 +70,23 @@ program:
 	;
 
 codeline: NEWLINE {printf("\n");}
-	| decl NEWLINE {printf("\n### line[%d] "GRN"OK"RESET" ###\n\n", yylineno-1);}
-	| assign NEWLINE {printf("\n### line[%d] "GRN"OK"RESET" ###\n\n", yylineno-1);}
-	| func NEWLINE {printf("\n### line[%d] "GRN"OK"RESET" ###\n\n", yylineno-1);}
+	| decl NEWLINE {printf("\n ### line[%d] "GRN"OK"RESET" ###\n\n", yylineno-1);}
+	| assign NEWLINE {printf("\n ### line[%d] "GRN"OK"RESET" ###\n\n", yylineno-1);}
+	| func NEWLINE {printf("\n ### line[%d] "GRN"OK"RESET" ###\n\n", yylineno-1);}
 	| error NEWLINE {errorflag=1; yyerrok;}
 	;
 
-decl:	DECL_TYPE decl_var {printf("\nDeclaration");}
-	| DECL_TYPE VAR '=' expr {printf("\nDeclaration with assignment");}
+decl:	DECL_TYPE decl_var {printf("\n Declaration");}
+	| DECL_TYPE VAR '=' expr {printf("\n Declaration with assignment");}
 	;
 
 decl_var: VAR
 	| VAR ',' decl_var
 	;
 
-assign: VAR '=' expr {printf("\nAssignment");}
-	| VAR ASSIGN_OP expr {printf("\nExpression Assignment");}
-	| VAR '=' func {printf("\nFunction with Assignment");}
+assign: VAR '=' expr {printf("\n Assignment");}
+	| VAR ASSIGN_OP expr {printf("\n Expression Assignment");}
+	| VAR '=' func {printf("\n Function with Assignment");}
 	;
 
 expr:	VAR
@@ -94,11 +94,11 @@ expr:	VAR
 	| FLOAT
 	| STRING 
 	| '(' expr ')'
-	| expr OP expr {printf("\nArithmetic expression");}
+	| expr OP expr {printf("\n Arithmetic expression");}
 	;
 
-func:	FUNC '(' VAR ')' {printf("\nPython Function on Variable");}
-	| FUNC '(' STRING ')' {printf("\nPython Function on String");}
+func:	FUNC '(' VAR ')' {printf("\n Python Function on Variable");}
+	| FUNC '(' STRING ')' {printf("\n Python Function on String");}
 	;
 %%
 

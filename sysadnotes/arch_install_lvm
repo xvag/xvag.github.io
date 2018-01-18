@@ -63,7 +63,6 @@ append: 127.0.1.1 myhostname.localdomain myhostname
 # swapon /swapfile
 # vi /etc/fstab
 append: /swapfile none swap defaults 0 0
-# pacman -S iw wpa_supplicant
 # mkinitcpio -p linux
 # passwd
 
@@ -101,12 +100,13 @@ append: username ALL=(ALL) ALL
 /*login as user username*/
 
 /*install basic gui*/
-$ sudo pacman -S i3
+$ sudo pacman -S xorg i3
 $ vi ~/.xinitrc
 edit: exec i3
 $ startx
 
 /*install tools/software etc*/
+$ sudo pacman -S iw wpa_supplicant dialog !for wifi
 $ sudo pacman -S base-devel !to install from AUR
 $ sudo pacman -S ntfs-3g !for r/w on ntfs
 $ sudo pacman -S pulseaudio pavucontrol !for audio

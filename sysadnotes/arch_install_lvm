@@ -100,7 +100,7 @@ append: username ALL=(ALL) ALL
 /*login as user username*/
 
 /*install basic gui*/
-$ sudo pacman -S xorg xorg-xinit i3
+$ sudo pacman -S xorg xorg-xinit xterm i3
 $ vi ~/.xinitrc
 edit: exec i3
 $ startx

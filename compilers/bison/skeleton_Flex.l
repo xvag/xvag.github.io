@@ -1,28 +1,19 @@
-/* ______________________________________________
-
+/*
 Title:  ........... (flex skeleton as a lexical analisi function)
 Author:
 Lab:
-
-
-
-_________________________________________________
-
-      proairetiki perixi dilosis start katastaseWn 
-_________________________________________________
-
 */
-
-
 
 %option noyywrap
 
- /*_________________________________________________
-  Kwdikas C gia orismo twn apaitoumenwn header files 
-  kai twn metablhtwn
- _________________________________________________*/
-
 %{
+#define RED "\x1B[31m"
+#define BLU "\x1B[34m"
+#define GRN "\x1B[32m"
+#define YEL "\x1B[33m"
+#define MAG "\x1B[35m"
+#define CYN "\x1B[36m"
+#define RESET "\x1B[0m"
 
 #define YYSTYPE double
 
@@ -32,23 +23,13 @@ _________________________________________________
 #include <string.h>
 #include <stdlib.h>
 
-#define RED "\x1B[31m"
-#define BLU "\x1B[34m"
-#define GRN "\x1B[32m"
-#define YEL "\x1B[33m"
-#define MAG "\x1B[35m"
-#define CYN "\x1B[36m"
-#define RESET "\x1B[0m"
-
-int lcounter=1, counter=0, space=0;
-
-void prn(char *s);
+int counter=0, space=0;
+int gw=0, bw=0;
 %}
 
-/* _____________________________________________
- 
-                  perioxi orismWn  
-________________________________________________*/
+
+
+/* Orismoi */
 
 EXP [eE]
 SIGN [+-]
@@ -58,81 +39,59 @@ LOW [a-z]
 CAP [A-Z]
 VAR [a-zA-Z_][a-zA-Z_0-9]*
 
-OP "+"|"-"|"*"|"/"|"%"|"**"|"//"
 ASSIGN_OP "+="|"-="|"*="|"/="|"%="|"**="|"//="
 
 DECL_TYPE "int"|"float"|"str"
-FUNC "type"|"len"|"print"|"input"
-SPECIAL ";"|","|"["|"]"|"{"|"}"
 ALL .
 
 
- /* ______________________________________________
 
-                  perioxi kanonwn 
- _________________________________________________*/
+ /* Kanones */
 
 %%
 
-"#".*|"\""{3}[\xA\x20-\x7E]*"\""{3} {
-//printf(YEL"Comment"RESET"(line %d): %s\n", lcounter, yytext);
-}
+"#".*|"\""{3}[\xA\x20-\x7E]*"\""{3} { }
 
-{FUNC} {printf("%s", yytext); return FUNC; }
+"len" {printf("%s", yytext); gw++; return LEN;}
+"type" {printf("%s", yytext); gw++; return TYPE;}
+"input" {printf("%s", yytext); gw++; return INPUT;}
+"print" {printf("%s", yytext); gw++; return PRINT;}
 
-"(" { printf("("); return '('; }
-")" { printf(")"); return ')'; }
-"," { printf(","); return ','; }
-"=" { printf("="); return '='; }
+[\[\](),=+\-*/%] {printf("%s",yytext); return *yytext;}
 
-{OP} {
-printf("%s", yytext); 
-return OP; }
+"**" {printf("%s", yytext); return POW;}
+"//" {printf("%s", yytext); return FDIV;}
 
-{ASSIGN_OP} {
-printf("%s", yytext);
-return ASSIGN_OP;}
+{ASSIGN_OP} {printf("%s", yytext);return ASSIGN_OP;}
 
-{DECL_TYPE} {printf("%s", yytext); return DECL_TYPE;}
+{DECL_TYPE} {printf("%s", yytext); gw++; return DECL_TYPE;}
 
-{SPECIAL} {
-printf("Special(line %d): %s\n",lcounter, yytext);}
-
-{SIGN}?(0|{NOZERO}{DIGIT}*) {
-printf("%s",yytext);
-return INT;}
+{SIGN}?(0|{NOZERO}{DIGIT}*) {printf("%s",yytext); gw++; return INT;}
 
 {SIGN}?({DIGIT}+"."{DIGIT}*|"."{DIGIT}+)({EXP}{SIGN}?{DIGIT}+)? {
 printf("%s",yytext);
+gw++;
 return FLOAT;}
 
 {SIGN}?\.{EXP}?{SIGN}?{DIGIT}* {
-printf(RED"\n Lexical Error: Illegal Float"RESET"(line:%d): %s",lcounter,yytext);};
+printf(RED"\n Lexical Error: Illegal Float"RESET"(line:%d): %s",yylineno,yytext);
+bw++;};
 
-"\"".*"\""|"'".*"'" {
-printf("%s", yytext); 
-return STRING; }
+"\"".*"\""|"'".*"'" {printf("%s", yytext); gw++; return STRING; }
 
 ("\""[^\"\n]*)|("'"[^'\n]*) {
-printf(RED"\n Lexical Error: Illegal String"RESET"(line:%d): %s", lcounter, yytext);}
+printf(RED"\n Lexical Error: Illegal String"RESET"(line:%d): %s", yylineno, yytext);
+bw++;}
 
-{VAR} {
-printf("%s", yytext); 
-return VAR;}
+{VAR} {printf("%s", yytext); gw++; return VAR;}
 
 {DIGIT}+{VAR} {
-printf(RED"\n Lexical Error: Illegal Variable name"RESET"(line:%d): %s", lcounter, yytext);}
+printf(RED"\n Lexical Error: Illegal Variable name"RESET"(line:%d): %s", yylineno, yytext);
+bw++;}
 
-\n { yylineno++; lcounter++; return NEWLINE; }
+\n { yylineno++; return NEWLINE; }
 " " { printf("%s", yytext); space++; }
-<<EOF>>		{ printf("\n#FILE ENDED\n%d lines read\n", yylineno-1); return 0; };
-
-. { printf("unscanned %s", yytext); counter++; }
+<<EOF>>	{ printf("\n Good Words # = %d\n Bad Words # = %d\n",gw, bw); return 0; };
+. { counter++; }
 
 %%
-
-void prn(char *s)
-{
-	printf("\n\t%s(line %d): %s ", s, yylineno, yytext);
-	return;
-}

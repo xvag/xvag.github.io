@@ -1,13 +1,8 @@
-/* ______________________________________________
-
+/*
 Title:  ........... (bison skeleton)
 Author:
 Lab:
-_________________________________________________
-
-Perioxi diloseon C kodika syntaktikoy analyti 
-(bibliothikes klp)
-_________________________________________________*/
+*/
 
 %{
 #define RED "\x1B[31m"
@@ -21,62 +16,49 @@ _________________________________________________*/
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#define YYSTYPE char *
+#define YYSTYPE int
+
 int errorflag=0;
+int ge=0, be=0;
 
 extern char * yytext;
-void yyerror(char  const* s);
+void yyerror(char const* s);
 extern FILE *yyin;
 extern int yylineno;
 extern int yylex();
 %}
 
-/* _____________________________________________
+/* tokens */
 
-       perioxi dilosis tokens 
-________________________________________________*/
 %error-verbose
-%token NEWLINE FUNC ASSIGN_OP OP
-%token DECL_TYPE VAR STRING
-%token INT FLOAT
+%token NEWLINE ASSIGN_OP DECL_TYPE POW FDIV
+%token LEN TYPE INPUT PRINT
+%token VAR STRING INT FLOAT
 
-/* _____________________________________________
 
-      proairetiki perixi dilosis proteraiotitwn 
-_________________________________________________*/
+/* protereotites */
 
 %left '(' ')'
 %left '+' '-'
 %left '*' '/' '%'
 %left NEG
 
-/* ______________________________________________
-
-       dilosi start conditions 
-_________________________________________________*/
 
 %start program
 
-
-/* ______________________________________________
-
-                  perioxi kanonwn 
-_________________________________________________*/
-
 %%
-
 program: 
 	| program codeline
 	;
 
 codeline: NEWLINE {printf("\n");}
-	| decl NEWLINE {printf("\n ### line[%d] "GRN"OK"RESET" ###\n\n", yylineno-1);}
-	| assign NEWLINE {printf("\n ### line[%d] "GRN"OK"RESET" ###\n\n", yylineno-1);}
-	| func NEWLINE {printf("\n ### line[%d] "GRN"OK"RESET" ###\n\n", yylineno-1);}
-	| error NEWLINE {errorflag=1; yyerrok;}
+	| decl NEWLINE {printf("\n ### line[%d] "GRN"OK"RESET" ###\n\n", yylineno-1); ge++;}
+	| assign NEWLINE {printf("\n ### line[%d] "GRN"OK"RESET" ###\n\n", yylineno-1); ge++;}
+	| print NEWLINE {printf("\n ### line[%d] "GRN"OK"RESET" ###\n\n", yylineno-1); ge++;}
+	| error NEWLINE {errorflag=1; yyerrok; be++;}
 	;
 
-decl:	DECL_TYPE decl_var {printf("\n Declaration");}
+decl: DECL_TYPE decl_var {printf("\n Declaration");}
 	| DECL_TYPE VAR '=' expr {printf("\n Declaration with assignment");}
 	;
 
@@ -85,23 +67,46 @@ decl_var: VAR
 	;
 
 assign: VAR '=' expr {printf("\n Assignment");}
+	| VAR '=' list {printf("\n List creation");}
 	| VAR ASSIGN_OP expr {printf("\n Expression Assignment");}
 	| VAR '=' func {printf("\n Function with Assignment");}
+	| VAR '[' INT ']' '=' expr {printf("\n Assignment to an element of a list");}
 	;
 
-expr:	VAR
-	| INT
-	| FLOAT
-	| STRING 
+expr: element
+	| VAR '[' INT ']'
 	| '(' expr ')'
-	| expr OP expr {printf("\n Arithmetic expression");}
+	| expr '+' expr {printf("\n Addition (%d + %d)", $1, $3);}
+	| expr '-' expr {printf("\n Substraction (%d - %d", $1, $3);}
+	| expr '*' expr {printf("\n Multiplication (%d * %d)", $1, $3);}
+	| expr '/' expr {printf("\n Division (%d / %d)", $1, $3);
+			if($3==0){printf(RED"\nWarning!"RESET" Division with zero.");} }
+	| expr '%' expr {printf("\n Remainder (%d %% %d)", $1, $3);
+			if($3==0){printf(RED"\nWarning!"RESET" Division with zero.");} }
+	| expr POW expr {printf("\n Power (%d ^ %d)", $1, $3);}
+	| expr FDIV expr {printf("\n Floor Division (%d // %d)", $1, $3);}
 	;
 
-func:	FUNC '(' VAR ')' {printf("\n Python Function on Variable");}
-	| FUNC '(' STRING ')' {printf("\n Python Function on String");}
+list: '[' list_elements ']'
+
+list_elements: element
+	| element ',' list_elements
 	;
+
+element: VAR
+	|	INT {$$ = atoi(yytext);}
+	|	FLOAT {$$ = atof(yytext);}
+	|	STRING
+	;
+
+func: LEN '(' VAR ')' {printf("\n Function len()");}
+	| TYPE '(' VAR ')' {printf("\n Function type()");}
+	| INPUT '(' ')' {printf("\n Function input()");}
+	| INPUT '(' STRING ')' {printf("\n Function input()");}
+	;
+
+print:	PRINT '(' STRING ')' {printf("\n Function print()");}
 %%
-
 
 
 void yyerror(const char* msg)
@@ -109,17 +114,21 @@ void yyerror(const char* msg)
 	printf(RED"\nLine: %d FAILURE %s\n\n"RESET,yylineno,msg);
 }
 
+
 int main(int argc,char **argv)
 {
-	int i;
 	if(argc == 2)
 		yyin=fopen(argv[1],"r");
 	else
 		yyin=stdin; 
 
-  if (yyparse()== 0 && errorflag == 0)
-     fprintf(stderr, GRN"Successful parsing.\n"RESET);
-  else
-     fprintf(stderr, RED"error(s) found!\n"RESET);
+	if (yyparse()== 0 && errorflag == 0) {
+		printf(" Good expressions # = %d\n Bad expressions # = %d\n", ge, be);
+		fprintf(stderr, GRN"Successful parsing.\n"RESET);
+	} else {
+		printf(" Good expressions # = %d\n Bad expressions # = %d\n", ge, be);
+		fprintf(stderr, RED"error(s) found!\n"RESET);
+	}
+
   return 0;
 }

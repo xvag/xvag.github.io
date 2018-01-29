@@ -90,6 +90,7 @@ expr: element
 list: '[' list_elements ']'
 
 list_elements: element
+	| list
 	| element ',' list_elements
 	;
 

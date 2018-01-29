@@ -10,7 +10,7 @@ print('print this string')
 
 z = fi // psi + 3
 
-k = [12, -6.77, "hi", AbC]
+k = [12, -6.77, "hi", AbC, [12, "elem", 5.e-66]]
 k[0] = 3 / 5
 
 length = len(string1)

@@ -1,11 +1,3 @@
-/*
-Bison input file 
-Evangelos Chouchoumis [cs050129]
-Iris-Ekaterini Diamandi [cs040038]
-Lab: E1-10
-*/
-
-
 %{
 #define RED "\x1B[31m"
 #define BLU "\x1B[34m"

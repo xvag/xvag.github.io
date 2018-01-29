@@ -1,10 +1,3 @@
-/*
-Flex input file 
-Evangelos Chouchoumis [cs050129]
-Iris-Ekaterini Diamandi [cs040038]
-Lab: E1-10
-*/
-
 %option noyywrap
 
 %{

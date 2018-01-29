@@ -1,8 +1,10 @@
 /*
-Title:  ........... (bison skeleton)
-Author:
-Lab:
+Bison input file 
+Evangelos Chouchoumis [cs050129]
+Iris-Ekaterini Diamandi [cs040038]
+Lab: E1-10
 */
+
 
 %{
 #define RED "\x1B[31m"
@@ -16,7 +18,7 @@ Lab:
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#define YYSTYPE int
+#define YYSTYPE char
 
 int errorflag=0;
 int ge=0, be=0;
@@ -36,13 +38,12 @@ extern int yylex();
 %token VAR STRING INT FLOAT
 
 
-/* protereotites */
+/* priorities */
 
 %left '(' ')'
 %left '+' '-'
-%left '*' '/' '%'
-%left NEG
-
+%left '*' '/' '%' FDIV
+%right POW
 
 %start program
 
@@ -70,14 +71,16 @@ assign: VAR '=' expr {printf("\n Assignment");}
 	| VAR '=' list {printf("\n List creation");}
 	| VAR ASSIGN_OP expr {printf("\n Expression Assignment");}
 	| VAR '=' func {printf("\n Function with Assignment");}
-	| VAR '[' INT ']' '=' expr {printf("\n Assignment to an element of a list");}
+	| VAR '[' INT ']' '=' expr {printf("\n Assignment to list element");}
+	| VAR '[' INT ']' ASSIGN_OP expr {printf("\n Expression assignment to list element");}
+	| VAR '[' INT ']' '=' func  {printf("\n Function with assignment to list element");}
 	;
 
 expr: element
 	| VAR '[' INT ']'
 	| '(' expr ')'
 	| expr '+' expr {printf("\n Addition (%d + %d)", $1, $3);}
-	| expr '-' expr {printf("\n Substraction (%d - %d", $1, $3);}
+	| expr '-' expr {printf("\n Substraction (%d - %d)", $1, $3);}
 	| expr '*' expr {printf("\n Multiplication (%d * %d)", $1, $3);}
 	| expr '/' expr {printf("\n Division (%d / %d)", $1, $3);
 			if($3==0){printf(RED"\nWarning!"RESET" Division with zero.");} }
@@ -90,14 +93,13 @@ expr: element
 list: '[' list_elements ']'
 
 list_elements: element
-	| list
 	| element ',' list_elements
 	;
 
 element: VAR
-	|	INT {$$ = atoi(yytext);}
-	|	FLOAT {$$ = atof(yytext);}
-	|	STRING
+	| INT {$$ = atoi(yytext);}
+	| FLOAT {$$ = atof(yytext);}
+	| STRING
 	;
 
 func: LEN '(' VAR ')' {printf("\n Function len()");}

@@ -1,7 +1,8 @@
 /*
-Title:  ........... (flex skeleton as a lexical analisi function)
-Author:
-Lab:
+Flex input file 
+Evangelos Chouchoumis [cs050129]
+Iris-Ekaterini Diamandi [cs040038]
+Lab: E1-10
 */
 
 %option noyywrap
@@ -23,13 +24,12 @@ Lab:
 #include <string.h>
 #include <stdlib.h>
 
-int counter=0, space=0;
+int counter=0;
+
 int gw=0, bw=0;
 %}
 
-
-
-/* Orismoi */
+/* Declarations */
 
 EXP [eE]
 SIGN [+-]
@@ -38,15 +38,12 @@ NOZERO [1-9]
 LOW [a-z]
 CAP [A-Z]
 VAR [a-zA-Z_][a-zA-Z_0-9]*
-
 ASSIGN_OP "+="|"-="|"*="|"/="|"%="|"**="|"//="
-
 DECL_TYPE "int"|"float"|"str"
 ALL .
 
 
-
- /* Kanones */
+/* Rules */
 
 %%
 
@@ -73,9 +70,7 @@ printf("%s",yytext);
 gw++;
 return FLOAT;}
 
-{SIGN}?\.{EXP}?{SIGN}?{DIGIT}* {
-printf(RED"\n Lexical Error: Illegal Float"RESET"(line:%d): %s",yylineno,yytext);
-bw++;};
+{VAR} {printf("%s", yytext); gw++; return VAR;}
 
 "\"".*"\""|"'".*"'" {printf("%s", yytext); gw++; return STRING; }
 
@@ -83,15 +78,19 @@ bw++;};
 printf(RED"\n Lexical Error: Illegal String"RESET"(line:%d): %s", yylineno, yytext);
 bw++;}
 
-{VAR} {printf("%s", yytext); gw++; return VAR;}
+{SIGN}?\.{EXP}?{SIGN}?{DIGIT}* {
+printf(RED"\n Lexical Error: Illegal Float"RESET"(line:%d): %s",yylineno,yytext);
+bw++;};
 
 {DIGIT}+{VAR} {
 printf(RED"\n Lexical Error: Illegal Variable name"RESET"(line:%d): %s", yylineno, yytext);
 bw++;}
 
 \n { yylineno++; return NEWLINE; }
-" " { printf("%s", yytext); space++; }
+" " {printf("%s", yytext);}
+
 <<EOF>>	{ printf("\n Good Words # = %d\n Bad Words # = %d\n",gw, bw); return 0; };
-. { counter++; }
+
+. { counter++; /* counts unscanned characters */ }
 
 %%

@@ -1,0 +1,16 @@
+# ?
+# show int
+# show ip route
+# conf t
+(config)# int [int]
+(config)# ip add [ip] [mask]
+(config)# no shut / shut
+(config)# exit / end
+# ip route [ip-net] [mask] [int]
+
+# show cdp neighbors
+# show cdp neighbors detail
+
+# lldp run
+# show lldp neighbors
+

@@ -1,3 +1,4 @@
 /* create bootable usb w/ dd */
 
-# dd bs=4M if=/path/to/.iso of=/dev/sdX status=progress oflag=sync
+# dd if=/path/to/.iso of=/dev/sdX bs=4M status=progress oflag=sync
+# dd if=/path/to/FBSD.img of=/dev/da0 bs=1M conv=sync 

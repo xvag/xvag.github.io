@@ -10,3 +10,6 @@
 /* bridged vm problem
 failed to parse default acl file '/usr/local/etc/qemu/bridge.conf' */
 echo "allow br0" > /etc/qemu/bridge.conf
+
+# ps -eo pid,ppid,cmd,%cpu,%mem --sort=%cpu | head
+

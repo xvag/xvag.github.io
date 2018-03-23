@@ -1,1 +1,1 @@
-notes/logs/labs                 
+notes/logs/labs/                 

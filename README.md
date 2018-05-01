@@ -1,3 +1,1 @@
-notes/logs/labs/                 
-
-[test](http://google.com)
+notes/logs/labs/

@@ -1,3 +1,9 @@
+---
+layout: post
+title:  "arch"
+categories: arch, linux, lvm
+---
+
 Hardware: Intel i5-6500, 16G RAM, 1x60G SSD, 2x500G HDD
 OS: Arch Linux 2017.07.01 – kernel: 4.11.7
 sda = 60Gb ssd (/, /boot)

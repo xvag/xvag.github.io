@@ -6,4 +6,4 @@ layout: default
 Hellooo!!!
 
 ffff
-<a href="./spice_vm">test</a>
+<a href="./spice_vm.md">test</a>

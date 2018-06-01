@@ -11,23 +11,23 @@ sdb,sdc = 500Gb hdd each (/home, /tmp).
 
 (uefi tips)
 if windows were previously installed on the disk, clean mbr with dd:
-eg `# dd if=/dev/zero of=/dev/sda bs=512 count=1` !clean partition table too
-or `# dd if=/dev/zero of=/dev/sda bs=446 count=1` !keep partition table
+eg # dd if=/dev/zero of=/dev/sda bs=512 count=1 !clean partition table too
+or # dd if=/dev/zero of=/dev/sda bs=446 count=1 !keep partition table
 !also boot the live usb/cd on uefi mode - it should be in boot menu!
 
 **network configuration**
-```bash
+
 # ip link set dev wlan0 up
 # wpa_supplicant -B -i wlan0 -c <(wpa_passphrase “SSID” “passphrase“)
 # dhcpcd wlan0
-```
+
 
 #### gdisk-ing, lvm-ing, formatting and mounting
 sda1 = 1G EFI System (ef)
 sda2 = 54.9G Linux fs (83)
 sdb1 = 465G Linux LVM (8e)
 sdc1 = 465G Linux LVM (8e)
-```
+
 # mkfs.fat -F32 /dev/sda1
 # mkfs.xfs /dev/sda2
 
@@ -46,7 +46,6 @@ sdc1 = 465G Linux LVM (8e)
 # mount /dev/mapper/VG01-lvhome /mnt/home/
 # mkdir /mnt/tmp/
 # mount /dev/mapper/VG01-lvtmp /mnt/tmp/
-```
 
 /*installing the base system*/
 # pacstrap /mnt base

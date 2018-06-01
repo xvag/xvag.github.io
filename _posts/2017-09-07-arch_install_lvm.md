@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: Installing Arch Linux on LVM

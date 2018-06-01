@@ -15,9 +15,11 @@ or `# dd if=/dev/zero of=/dev/sda bs=446 count=1` !keep partition table
 !also boot the live usb/cd on uefi mode - it should be in boot menu!
 
 ### network configuration
-`# ip link set dev wlan0 up
+```
+# ip link set dev wlan0 up
 # wpa_supplicant -B -i wlan0 -c <(wpa_passphrase “SSID” “passphrase“)
-# dhcpcd wlan0`
+# dhcpcd wlan0
+```
 
 /*gdisk-ing, lvm-ing, formatting and mounting*/
 sda1 = 1G EFI System (ef)

@@ -3,10 +3,10 @@ layout: post
 title: Installing Arch Linux on LVM
 tags: [arch, linux, lvm]
 ---
-Hardware: Intel i5-6500, 16G RAM, 1x60G SSD, 2x500G HDD
-OS: Arch Linux 2017.07.01 – kernel: 4.11.7
-sda = 60Gb ssd (/, /boot)
-sdb,sdc = 500Gb hdd each (/home, /tmp)
+Hardware: Intel i5-6500, 16G RAM, 1x60G SSD, 2x500G HDD.
+OS: Arch Linux 2017.07.01 – kernel: 4.11.7.
+sda = 60Gb ssd (/, /boot).
+sdb,sdc = 500Gb hdd each (/home, /tmp).
 
 (uefi tips)
 if windows were previously installed on the disk, clean mbr with dd:

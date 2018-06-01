@@ -12,7 +12,7 @@ sdb,sdc = 500Gb hdd each (/home, /tmp)
 edit:
 (uefi tips)
 if windows were previously installed on the disk, clean mbr with dd:
-eg # dd if=/dev/zero of=/dev/sda bs=512 count=1 !clean partition table too
+eg `# dd if=/dev/zero of=/dev/sda bs=512 count=1` !clean partition table too
 or # dd if=/dev/zero of=/dev/sda bs=446 count=1 !keep partition table
 !also boot the live usb/cd on uefi mode - it should be in boot menu!
 

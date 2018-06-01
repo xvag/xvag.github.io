@@ -1,8 +1,8 @@
 # Site settings
 title: "xvag"
 description: "logs"
-baseurl: "/textlog"
-url: "xvag.github.io"
+baseurl: ""
+url: ""
 author: "xvag"
 
 # Build settings

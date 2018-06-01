@@ -14,7 +14,7 @@ eg `# dd if=/dev/zero of=/dev/sda bs=512 count=1` !clean partition table too
 or `# dd if=/dev/zero of=/dev/sda bs=446 count=1` !keep partition table
 !also boot the live usb/cd on uefi mode - it should be in boot menu!
 
-### network configuration
+**network configuration**
 ```
 # ip link set dev wlan0 up
 # wpa_supplicant -B -i wlan0 -c <(wpa_passphrase “SSID” “passphrase“)

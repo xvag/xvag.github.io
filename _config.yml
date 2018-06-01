@@ -1,3 +1,16 @@
-title: xvag
-description: notes/logs/labs/
-theme: jekyll-theme-hacker
+# Site settings
+title: "TextLog"
+description: "Minimalist Jekyll theme for documentation"
+baseurl: "/textlog"
+url: ""
+author: "John Doe"
+
+# Build settings
+kramdown:
+  input: GFM
+permalink: pretty
+
+# Third-party services
+# just leave empty to disable it
+google_analytics:
+disqus_shortname: hnbloggithub

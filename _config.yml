@@ -1,9 +1,9 @@
 # Site settings
-title: "xvag"
-description: "logs"
+title: "notes/logs/labs"
+description: ""
 baseurl: ""
 url: ""
-author: "xvag"
+author: ""
 
 # Build settings
 kramdown:

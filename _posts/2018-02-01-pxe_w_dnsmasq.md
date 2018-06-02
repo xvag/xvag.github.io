@@ -46,7 +46,7 @@ edit /etc/resolv.conf<br>
 restart network<br>
 `# service networking restart`
 
-edit configuration file = /etc/dnsmasq.conf 
+edit configuration file: /etc/dnsmasq.conf 
 ```
 interface=eth2
 dhcp-range=eth2,192.168.1.100,192.168.1.200,4h
@@ -70,8 +70,7 @@ import it to libvirt<br>
 `$ virt-install --name testvm --memory 2048 --disk /path/to/testvm.raw --import`
 
 `$ virsh edit testvm`<br>
-set up 2 NICs again as above, but place br0 interface above user
-
+set up 2 NICs again as above, but place br0 interface above user<br>
 configure vm to boot from network<br>
 ``` 
  <os>
@@ -81,5 +80,5 @@ configure vm to boot from network<br>
   </os>
 ```
 
-boot testvm and enjoy!
+Boot testvm and enjoy!
 

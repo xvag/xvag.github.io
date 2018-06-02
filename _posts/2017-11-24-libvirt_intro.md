@@ -6,22 +6,22 @@ tags: [virtualization, libvirt]
 
 Host: Arch Linux 4.15
 
-- server
+- server<br>
 `# pacman -S libvirt`
 
-- for the default NAT/DHCP networking
+- for the default NAT/DHCP networking<br>
 `# pacman -S ebtables dnsmasq`
 
-- for bridged networking
+- for bridged networking<br>
 `# pacman -S bridge-utils`
 
-- for remote management over ssh
+- for remote management over ssh<br>
 `# pacman -S openbsd-netcat`
 
-- client
+- client<br>
 `# pacman -S virt-manager virt-viewer`
 
-- set up authentication - using polkit
+- set up authentication - using polkit<br>
 The libvirt daemon provides two polkit actions in /usr/share/polkit-1/actions/org.libvirt.unix.policy:<br>
 	org.libvirt.unix.manage for full management access (RW daemon socket), and<br>
 	org.libvirt.unix.monitor for monitoring only access (read-only socket).<br>
@@ -35,14 +35,14 @@ this is defined in /etc/polkit-1/rules.d/50-default.rules <br>
 Therefore there is no need to create a new group and rule file if your user is a member of the wheel group:<br>
 upon connection to the RW socket (e.g. via virt-manager) you will be prompted for your user's password.<br>
 
-- starting the daemons
+- starting the daemons<br>
 `# systemctl start libvirtd.service`
 `# systemctl start virtlogd.service`
 
 Optionally enable libvirtd.service.<br>
 There is no need to enable virtlogd.service, since libvirtd.service, when enabled, also enables the virtlogd.socket and virtlockd.socket units.
 
-- test
+- test<br>
 To test if libvirt is working properly on a system level:<br>
 `$ virsh -c qemu:///system`
 
@@ -52,12 +52,12 @@ To test if libvirt is working properly for a user-session:<br>
 
 ### management
 
-- Print active and inactive storage pools
+- Print active and inactive storage pools<br>
 `$ virsh pool-list --all`
 
 - create a new pool using virsh
 
-- define a directory
+-- define a directory
 `$ virsh pool-define-as poolname dir - - - - /home/username/.local/libvirt/images`
 
 - define a LVM volume 

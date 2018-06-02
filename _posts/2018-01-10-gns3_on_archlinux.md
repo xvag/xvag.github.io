@@ -236,7 +236,8 @@ marc wheel docker
 #### [27] Log out and back in for the new group membership to take effect.
 
 #### [28] Verify the new group membership.
-```$ id -Gn
+```
+$ id -Gn
 marc wheel wireshark docker
 ```
 

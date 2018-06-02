@@ -247,7 +247,7 @@ marc wheel wireshark docker
 
 
 #### [30] Install Git and create/set a working directory.
-The GNS3 Server and GUI can be installed via pip(https://en.wikipedia.org/wiki/Pip_(package_manager)),
+The GNS3 Server and GUI can be installed via pip(https://en.wikipedia.org/wiki/Pip_(package_manager)),<br>
 but I prefer the Git method in case I need to modify source files before installation.
 ```
 $ sudo pacman -S git

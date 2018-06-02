@@ -141,7 +141,7 @@ $ virt-install  \
   --import
 ```
 
-- delete/remove domain
+- delete/remove domain<br>
 `$ virsh undefine domain`
 
 - start domain

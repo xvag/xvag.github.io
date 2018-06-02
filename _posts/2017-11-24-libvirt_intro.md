@@ -50,7 +50,7 @@ To test if libvirt is working properly for a user-session:<br>
 `$ virsh -c qemu:///session`
 
 
-### management
+### Management
 
 - Print active and inactive storage pools<br>
 `$ virsh pool-list --all`
@@ -60,7 +60,7 @@ To test if libvirt is working properly for a user-session:<br>
 define a directory<br>
 `$ virsh pool-define-as poolname dir - - - - /home/username/.local/libvirt/images`
 
-- define a LVM volume 
+##### define a LVM volume 
 `$ virsh pool-define-as poolname fs - -  /dev/vg0/images - mntpoint`
 
 Tip: For LVM storage pools:<br>

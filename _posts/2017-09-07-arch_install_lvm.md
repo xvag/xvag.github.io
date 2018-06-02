@@ -4,28 +4,28 @@ title: Installing Arch Linux on LVM
 tags: [arch, linux, lvm]
 ---
 
-Hardware: Intel i5-6500, 16G RAM, 1x60G SSD, 2x500G HDD
-OS: Arch Linux 2017.07.01 – kernel: 4.11.7
-sda = 60Gb ssd (/, /boot)
-sdb,sdc = 500Gb hdd each (/home, /tmp)
+Hardware: Intel i5-6500, 16G RAM, 1x60G SSD, 2x500G HDD<br>
+OS: Arch Linux 2017.07.01 – kernel: 4.11.7<br>
+sda = 60Gb ssd (/, /boot)<br>
+sdb,sdc = 500Gb hdd each (/home, /tmp)<br>
 
-(uefi tips)
-if windows were previously installed on the disk, clean mbr with dd:
-eg `# dd if=/dev/zero of=/dev/sda bs=512 count=1` !clean partition table too
-or `# dd if=/dev/zero of=/dev/sda bs=446 count=1` !keep partition table
-!also boot the live usb/cd on uefi mode - it should be in boot menu!
+(uefi tips)<br>
+if windows were previously installed on the disk, clean mbr with dd:<br>
+eg `# dd if=/dev/zero of=/dev/sda bs=512 count=1` !clean partition table too<br>
+or `# dd if=/dev/zero of=/dev/sda bs=446 count=1` !keep partition table<br>
+!also boot the live usb/cd on uefi mode - it should be in boot menu!<br>
 
-**network configuration**
+#### network configuration
 ```
 # ip link set dev wlan0 up
 # wpa_supplicant -B -i wlan0 -c <(wpa_passphrase “SSID” “passphrase“)
 # dhcpcd wlan0
 ```
 #### gdisk-ing, lvm-ing, formatting and mounting
-sda1 = 1G EFI System (ef)
-sda2 = 54.9G Linux fs (83)
-sdb1 = 465G Linux LVM (8e)
-sdc1 = 465G Linux LVM (8e)
+sda1 = 1G EFI System (ef)<br>
+sda2 = 54.9G Linux fs (83)<br>
+sdb1 = 465G Linux LVM (8e)<br>
+sdc1 = 465G Linux LVM (8e)<br>
 ```
 # mkfs.fat -F32 /dev/sda1
 # mkfs.xfs /dev/sda2
@@ -46,13 +46,13 @@ sdc1 = 465G Linux LVM (8e)
 # mkdir /mnt/tmp/
 # mount /dev/mapper/VG01-lvtmp /mnt/tmp/
 ```
-### installing the base system
+#### installing the base system
 ```
 # pacstrap /mnt base
 # genfstab -U /mnt >> /mnt/etc/fstab
 # arch-chroot /mnt
 ```
-### inside the new system
+#### inside the new system
 ```
 # ln -sf /usr/share/zoneinfo/Region/City /etc/localtime
 # hwclock –systohc
@@ -64,7 +64,7 @@ uncomment: en_US.UTF-8 and the rest
 # vi /etc/hosts
 append: 127.0.1.1 myhostname.localdomain myhostname
 ```
-### create a 8G swap file
+#### create a 8G swap file
 ```
 # dd if=/dev/zero of=/swapfile bs=1M count=8192
 # chmod 600 /swapfile
@@ -76,7 +76,7 @@ h
 # mkinitcpio -p linux
 # passwd
 ```
-### install grub
+#### install grub
 ```
 # pacman -S grub efibootmgr intel-ucode
 # grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub
@@ -86,7 +86,7 @@ h
 # umount -R /mnt
 # reboot /*into the new system*/
 ```
-### some post-configuration
+#### some post-configuration
 ```
 /*configure wireless network to start on boot*/
 # vi /etc/netctl/profilename !examples can be found at /etc/netctl/examples/
@@ -101,7 +101,7 @@ Key=your_key
 # netctl start profilename !troubleshoot with #journalctl -xn or #netctl status profilename
 # netctl enable profilename
 ```
-### create basic user
+#### create basic user
 ```
 # useradd -m username
 # passwd username
@@ -110,16 +110,16 @@ Key=your_key
 append: username ALL=(ALL) ALL
 ```
 
-** login as user username **
+#### login as user username
 
-** install basic gui **
+#### install basic gui
 ```
 $ sudo pacman -S xorg xorg-xinit xterm i3
 $ vi ~/.xinitrc
 edit: exec i3
 $ startx
 ```
-** install tools/software etc **
+#### install tools/basic posts etc
 ```
 $ sudo pacman -S iw wpa_supplicant dialog !for wifi
 $ sudo pacman -S base-devel !to install from AUR

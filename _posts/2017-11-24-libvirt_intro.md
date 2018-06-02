@@ -57,7 +57,7 @@ To test if libvirt is working properly for a user-session:<br>
 
 - create a new pool using virsh
 
--- define a directory
+define a directory<br>
 `$ virsh pool-define-as poolname dir - - - - /home/username/.local/libvirt/images`
 
 - define a LVM volume 

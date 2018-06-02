@@ -50,10 +50,10 @@ To test if libvirt is working properly for a user-session:<br>
 
 ### Management
 
-#### Print active and inactive storage pools
+#### print active and inactive storage pools
 `$ virsh pool-list --all`
 
-#### Create a new pool using virsh
+#### create a new pool using virsh
 
 - define a directory<br>
 `$ virsh pool-define-as poolname dir - - - - /home/username/.local/libvirt/images`
@@ -78,7 +78,7 @@ $ virsh pool-autostart poolname
 `$ virsh pool-undefine  poolname`
 
 
-#### Manage volumes
+#### manage volumes
 ```
 $ virsh vol-create-as      poolname volumename 10GiB --format aw|bochs|raw|qcow|qcow2|vmdk
 $ virsh vol-upload  --pool poolname volumename volumepath
@@ -88,7 +88,7 @@ $ virsh vol-delete  --pool poolname volumename
 $ virsh vol-dumpxml --pool poolname volumename  # for details.
 ```
 
-#### Manage domains
+#### manage domains
 `# virsh list --all`
 
 - create new domain - examples
@@ -132,7 +132,7 @@ $ virt-install \
   --graphics spice
 ```
 
-- Import existing volume
+- import existing volume
 ```
 $ virt-install  \
   --name demo  \
@@ -162,13 +162,13 @@ $ virsh autostart domain
 $ virsh autostart domain --disable
 ```
 
-- shutdown domain on host shutdown
+- shutdown domain on host shutdown<br>
 Running domains can be automatically suspended/shutdown at host shutdown 
 using the libvirt-guests.service systemd service. 
 This same service will resume/startup the suspended/shutdown domain 
 automatically at host startup. 
 Read /etc/conf.d/libvirt-guests for service options.
 
-- edit a domain's XML configuration
+- edit a domain's XML configuration<br>
 `$ virsh edit domain`
 

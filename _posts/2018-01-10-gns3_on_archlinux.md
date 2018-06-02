@@ -176,89 +176,94 @@ $ cat iourc
 
 ##		{--- uBridge ---}
 
-[16] Get and install uBridge.
-I will download and install the latest release (at the date of this post) for my example. 
+#### [16] Get and install uBridge.
+I will download and install the latest release (at the date of this post) for my example. <br>
 Refer to ubridge (https://github.com/GNS3/ubridge/releases) for specific versions and release notes.
+```
 $ cd /tmp
 $ curl -L https://github.com/GNS3/ubridge/archive/v0.9.13.tar.gz | tar -xz
 $ cd ubridge*
 $ make
 $ sudo make install
-
-[17] Verify the version and capabilities for uBridge.
+```
+#### [17] Verify the version and capabilities for uBridge.
+```
 $ cd $HOME
 $ ubridge -v
 ubridge version 0.9.13
 $ getcap $(which ubridge)
 /usr/local/bin/ubridge = cap_net_admin,cap_net_raw+ep
+```
 
+##		{--- QEMU ---}
 
-		{--- QEMU ---}
-
-[18] Get and install QEMU.
-$ sudo pacman -S qemu
+#### [18] Get and install QEMU.
+`$ sudo pacman -S qemu`<br>
 Note: It's highly recommended to enable KVM for QEMU. Refer to Enabling KVM and KVM for more information.
 
 
-		{--- Docker ---}
+##		{--- Docker ---}
 
-[19] Get and install Docker.
-$ sudo pacman -S docker
+#### [19] Get and install Docker.
+`$ sudo pacman -S docker`
 
-[20] Start and enable 'docker.service'.
-$ sudo systemctl enable docker.service
-$ sudo systemctl start docker.service
+#### [20] Start and enable 'docker.service'.
+`$ sudo systemctl enable docker.service`<br>
+`$ sudo systemctl start docker.service`
 
-[21] Add yourself to the 'docker' group.
-$ sudo gpasswd -a $(id -un) docker
+#### [21] Add yourself to the 'docker' group.
+`$ sudo gpasswd -a $(id -un) docker`
 
-[22] Log out and back in for the new group membership to take effect.
+#### [22] Log out and back in for the new group membership to take effect.
 
-[23] Verify the new group membership.
+#### [23] Verify the new group membership.
+```
 $ id -Gn
 marc wheel docker  
+```
+#### [24] Display system-wide information for Docker.
+`$ docker info`
 
-[24] Display system-wide information for Docker.
-$ docker info
 
+##		{--- Wireshark ---}
 
-		{--- Wireshark ---}
+#### [25] Get and install Wireshark (with the GTK frontend).
+`$ sudo pacman -S wireshark-gtk`
 
-[25] Get and install Wireshark (with the GTK frontend).
-$ sudo pacman -S wireshark-gtk
+#### [26] Add yourself to the 'wireshark' group.
+`$ sudo gpasswd -a $(id -un) wireshark`
 
-[26] Add yourself to the 'wireshark' group.
-$ sudo gpasswd -a $(id -un) wireshark
+#### [27] Log out and back in for the new group membership to take effect.
 
-[27] Log out and back in for the new group membership to take effect.
-
-[28] Verify the new group membership.
-$ id -Gn
+#### [28] Verify the new group membership.
+```$ id -Gn
 marc wheel wireshark docker
+```
+
+##		{--- GNS3 ---}
+
+#### [29] Get and install GNS3 dependencies.
+`$ sudo pacman -S qt5-svg qt5-websockets python-pip python-pyqt5 python-sip`
 
 
-		{--- GNS3 ---}
-
-[29] Get and install GNS3 dependencies.
-$ sudo pacman -S qt5-svg qt5-websockets python-pip python-pyqt5 python-sip
-
-
-[30] Install Git and create/set a working directory.
-The GNS3 Server and GUI can be installed via pip(https://en.wikipedia.org/wiki/Pip_(package_manager)), 
+#### [30] Install Git and create/set a working directory.
+The GNS3 Server and GUI can be installed via pip(https://en.wikipedia.org/wiki/Pip_(package_manager)),
 but I prefer the Git method in case I need to modify source files before installation.
-
+```
 $ sudo pacman -S git
 $ mkdir -p $HOME/GNS3-Dev && cd $_
-
-[31] Get and install GNS3 Server from GitHub.
+```
+#### [31] Get and install GNS3 Server from GitHub.
+```
 $ git clone https://github.com/GNS3/gns3-server.git
 $ cd gns3-server
 $ git tag --list 'v2.1.*'
 $ git checkout v2.1.0
 $ sudo pip3 install -r requirements.txt
 $ sudo python3 setup.py install
-
-[32] Get and install GNS3 GUI from GitHub.
+```
+#### [32] Get and install GNS3 GUI from GitHub.
+```
 $ cd $HOME/GNS3-Dev
 $ git clone https://github.com/GNS3/gns3-gui.git
 $ cd gns3-gui
@@ -266,11 +271,12 @@ $ git tag --list 'v2.1.*'
 $ git checkout v2.1.0
 $ sudo pip3 install -r requirements.txt
 $ sudo python3 setup.py install
-
-[33] Verify the GNS3 packages have been installed.
+```
+#### [33] Verify the GNS3 packages have been installed.
+```
 $ pip3 list | grep gns3
 gns3-gui (2.1.0)
 gns3-server (2.1.0)
-
+```
 
 source: http://binarynature.blogspot.gr/2015/11/install-configure-gns3-arch-linux.html

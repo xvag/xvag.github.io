@@ -1,11 +1,3 @@
-
----
-layout: post
-title: This is markdown cheatsheet demo
-tags: [Demo, Markdown]
-comment: true
----
-
 # Typography
 
 ## Headings

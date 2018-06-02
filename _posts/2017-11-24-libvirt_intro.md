@@ -55,7 +55,7 @@ To test if libvirt is working properly for a user-session:<br>
 - Print active and inactive storage pools<br>
 `$ virsh pool-list --all`
 
-- create a new pool using virsh
+#### create a new pool using virsh
 
 define a directory<br>
 `$ virsh pool-define-as poolname dir - - - - /home/username/.local/libvirt/images`

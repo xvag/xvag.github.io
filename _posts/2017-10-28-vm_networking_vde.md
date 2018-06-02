@@ -31,7 +31,8 @@ and/or
 
 $ vde_switch -d -s /tmp/vde0 -M /tmp/vde0mgmt
 $ vde_plug2tap -d -s /tmp/vde0 tap0
-``
+```
+
 - start each vm with different MAC address
 `$ qemu-system-x86_64 ... -net nic,macaddr=52:54:xx:xx:xx:xx -net vde,sock=/tmp/vde0`
 

@@ -68,9 +68,11 @@ otherwise when the storage pool is deleted the LVM group will be too.
 
 The above command defines the information for the pool
 - to build it
-```$ virsh pool-build     poolname
+```
+$ virsh pool-build     poolname
 $ virsh pool-start     poolname
-$ virsh pool-autostart poolname```
+$ virsh pool-autostart poolname
+```
 
 - to remove it<br>
 `$ virsh pool-undefine  poolname`

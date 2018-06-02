@@ -5,13 +5,13 @@ tags: [linux, virtualization, kvm, qemu]
 ---
 
 #### check for virtualization support
-`# lscpu` 
-looking for VT-x for Intel processors and AMD-V for AMD processors
-or
+`# lscpu`<br>
+looking for VT-x for Intel processors and AMD-V for AMD processors<br>
+or<br>
 `# egrep --color=auto 'vmx|svm|0xc0f' /proc/cpuinfo`
 
 #### check for kvm module availability
-`# zgrep CONFIG_KVM /proc/config.gz`
+`# zgrep CONFIG_KVM /proc/config.gz`<br>
 The module is only available if it is set to either y or m
 
 #### install qemu

@@ -12,7 +12,7 @@ tags: [netwroking, gns3]
 
 #### [02] Get and install Dynamips.
 
-I will download and install the latest release (at the date of this post) for my example. 
+I will download and install the latest release (at the date of this post) for my example.<br>
 Refer to dynamips (https://github.com/GNS3/dynamips/releases) for specific versions and release notes.
 ```
 $ cd /tmp
@@ -34,11 +34,11 @@ $ getcap $(which dynamips)
 
 ##		{--- VPCS ---}
 
-[04] Get and install VPCS.
+#### [04] Get and install VPCS.
 
-I will perform a Subversion (SVN) (https://subversion.apache.org/) checkout from the main trunk for my example. 
+I will perform a Subversion (SVN) (https://subversion.apache.org/) checkout from the main trunk for my example.<br>
 Refer to the Virtual PC Simulator project site (http://sourceforge.net/projects/vpcs/) for more information.
-
+```
 $ sudo pacman -S subversion
 $ cd /tmp
 $ svn checkout svn://svn.code.sf.net/p/vpcs/code/trunk vpcs-code
@@ -51,27 +51,27 @@ $ sed -i 's/-s -static//' Makefile.linux
 $ make -f Makefile.linux
 $ strip --strip-unneeded vpcs
 $ sudo mv vpcs /usr/local/bin
-
-[05] Verify the location and version for VPCS.
-
+```
+#### [05] Verify the location and version for VPCS.
+````
 $ cd $HOME
 $ type vpcs
 vpcs is /usr/local/bin/vpcs
 $ vpcs -v | grep version
 Welcome to Virtual PC Simulator, version 0.8c
+````
 
+##		{--- IOUYAP ---}
 
-		{--- IOUYAP ---}
+#### [06] Get and install iniparser for IOUYAP.
 
-[06] Get and install iniparser for IOUYAP.
+`$ sudo pacman -S iniparser`
 
-$ sudo pacman -S iniparser
+#### [07] Get and install IOUYAP.
 
-[07] Get and install IOUYAP.
-
-I will download and install the latest release (at the date of this post) for my example. 
+I will download and install the latest release (at the date of this post) for my example.<br>
 Refer to iouyap (https://github.com/GNS3/iouyap/releases) for specific versions and release notes.
-
+```
 $ cd /tmp
 $ curl -L https://github.com/GNS3/iouyap/archive/v0.97.tar.gz | tar -xz
 $ cd iouyap*
@@ -80,67 +80,70 @@ $ flex netmap_scan.l
 $ gcc -Wall -g *.c -o iouyap -liniparser -lpthread
 $ strip --strip-unneeded iouyap
 $ sudo mv iouyap /usr/local/bin
-
-[08] Set capabilities for IOUYAP.
-
+```
+#### [08] Set capabilities for IOUYAP.
+```
 $ cd $HOME
 $ sudo setcap cap_net_admin,cap_net_raw=ep $(which iouyap)
-
-[09] Verify the version and capabilities for IOUYAP.
-
+```
+#### [09] Verify the version and capabilities for IOUYAP.
+```
 $ iouyap -V
 iouyap version 0.97.0
 $ getcap $(which iouyap)
 /usr/local/bin/iouyap = cap_net_admin,cap_net_raw+ep
+```
 
-
-		{--- IOS on Linux (IOL) aka IOS on Unix (IOU) ---}
+##		{--- IOS on Linux (IOL) aka IOS on Unix (IOU) ---}
 
 Disclaimer: The inclusion of references to IOL is intended for educational and/or informational purposes only.
 
-[10] Enable the multilib repository (if not already enabled).
+#### [10] Enable the multilib repository (if not already enabled).
 Refer to Multilib (https://wiki.archlinux.org/index.php/Multilib) for more information.
-
+```
 $ sudo vi /etc/pacman.conf
 ...
 [multilib]
 Include = /etc/pacman.d/mirrorlist
 ...
-
+```
 Refresh the master package list.
-$ sudo pacman -Sy
+`$ sudo pacman -Sy`
 
-[11] Get and install IOL dependencies.
-$ sudo pacman -S lib32-openssl lib32-gcc-libs
-$ sudo ln -s /usr/lib32/libcrypto.so.1.0.0 /usr/lib32/libcrypto.so.4
+#### [11] Get and install IOL dependencies.
+`$ sudo pacman -S lib32-openssl lib32-gcc-libs`<br>
+`$ sudo ln -s /usr/lib32/libcrypto.so.1.0.0 /usr/lib32/libcrypto.so.4`
 
-[12] Prevent EXCESSCOLL IOL error.
+#### [12] Prevent EXCESSCOLL IOL error.
 Get the current value for the datagram queue length for Unix domain sockets.
-
+```
 $ sysctl net.unix.max_dgram_qlen
 net.unix.max_dgram_qlen = 512
-
-Increase the value to 10000.
-$ sudo sysctl net.unix.max_dgram_qlen=10000
+```
+Increase the value to 10000.<br>
+`$ sudo sysctl net.unix.max_dgram_qlen=10000`
 
 We also need to make the modification persistent.
+```
 $ sudo tee -a /etc/sysctl.d/99-sysctl.conf > /dev/null << EOL
 > # Prevent EXCESSCOLL error for IOL
 > net.unix.max_dgram_qlen=10000
 > EOL
-
+```
 Verify the new configuration by running the following commands and take note of the output:
+```
 $ sysctl net.unix.max_dgram_qlen
 net.unix.max_dgram_qlen = 10000
 $ tail -2 /etc/sysctl.d/99-sysctl.conf
 # Prevent EXCESSCOLL error for IOL
 net.unix.max_dgram_qlen=10000
-
-[13] E.T. No Phone Home.
-Add an entry to the hosts file.
-$ sudo sed -i '/127.0.1.1/a 127.0.0.84\txml.cisco.com' /etc/hosts
+```
+#### [13] E.T. No Phone Home.
+Add an entry to the hosts file.<br>
+`$ sudo sed -i '/127.0.1.1/a 127.0.0.84\txml.cisco.com' /etc/hosts`
 
 Verify the new entry has been added.
+```
 $ cat /etc/hosts
 #
 # /etc/hosts: static lookup table for host names
@@ -153,23 +156,25 @@ $ cat /etc/hosts
 127.0.0.84 xml.cisco.com
 
 # End of file
-
-[14] Set the hostid to '00000000'.
+```
+#### [14] Set the hostid to '00000000'.
+```
 $ cd $HOME
 $ hostid
 $ curl -Lo set-hostid.sh https://goo.gl/7dDf9S
 $ chmod u+x set-hostid.sh
 $ sudo ./set-hostid.sh 00000000
 $ hostid
-
-[15] Create a sample IOL license file.
+```
+#### [15] Create a sample IOL license file.
+```
 $ curl -Lo iou4u.py https://goo.gl/fpzYbY
 $ chmod u+x iou4u.py
 $ ./iou4u.py
 $ cat iourc
+```
 
-
-		{--- uBridge ---}
+##		{--- uBridge ---}
 
 [16] Get and install uBridge.
 I will download and install the latest release (at the date of this post) for my example. 

@@ -6,7 +6,7 @@ tags: [virtualization, libvirt]
 
 Host: Arch Linux 4.15
 
-server<br>
+install server<br>
 `# pacman -S libvirt`
 
 for the default NAT/DHCP networking<br>
@@ -18,10 +18,10 @@ for bridged networking<br>
 for remote management over ssh<br>
 `# pacman -S openbsd-netcat`
 
-client<br>
+install client<br>
 `# pacman -S virt-manager virt-viewer`
 
-set up authentication - using polkit<br>
+set up authentication - using polkit:<br>
 The libvirt daemon provides two polkit actions in /usr/share/polkit-1/actions/org.libvirt.unix.policy:<br>
 	org.libvirt.unix.manage for full management access (RW daemon socket), and<br>
 	org.libvirt.unix.monitor for monitoring only access (read-only socket).<br>
@@ -36,7 +36,7 @@ Therefore there is no need to create a new group and rule file if your user is a
 upon connection to the RW socket (e.g. via virt-manager) you will be prompted for your user's password.<br>
 
 starting the daemons<br>
-`# systemctl start libvirtd.service`
+`# systemctl start libvirtd.service`<br>
 `# systemctl start virtlogd.service`
 
 Optionally enable libvirtd.service.<br>
@@ -68,13 +68,11 @@ otherwise when the storage pool is deleted the LVM group will be too.
 
 The above command defines the information for the pool
 - to build it
-```
-$ virsh pool-build     poolname
+```$ virsh pool-build     poolname
 $ virsh pool-start     poolname
-$ virsh pool-autostart poolname
-```
+$ virsh pool-autostart poolname```
 
-- to remove it
+- to remove it<br>
 `$ virsh pool-undefine  poolname`
 
 

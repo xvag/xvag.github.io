@@ -6,22 +6,22 @@ tags: [virtualization, libvirt]
 
 Host: Arch Linux 4.15
 
-- server<br>
+server<br>
 `# pacman -S libvirt`
 
-- for the default NAT/DHCP networking<br>
+for the default NAT/DHCP networking<br>
 `# pacman -S ebtables dnsmasq`
 
-- for bridged networking<br>
+for bridged networking<br>
 `# pacman -S bridge-utils`
 
-- for remote management over ssh<br>
+for remote management over ssh<br>
 `# pacman -S openbsd-netcat`
 
-- client<br>
+client<br>
 `# pacman -S virt-manager virt-viewer`
 
-- set up authentication - using polkit<br>
+set up authentication - using polkit<br>
 The libvirt daemon provides two polkit actions in /usr/share/polkit-1/actions/org.libvirt.unix.policy:<br>
 	org.libvirt.unix.manage for full management access (RW daemon socket), and<br>
 	org.libvirt.unix.monitor for monitoring only access (read-only socket).<br>
@@ -35,32 +35,30 @@ this is defined in /etc/polkit-1/rules.d/50-default.rules <br>
 Therefore there is no need to create a new group and rule file if your user is a member of the wheel group:<br>
 upon connection to the RW socket (e.g. via virt-manager) you will be prompted for your user's password.<br>
 
-- starting the daemons<br>
+starting the daemons<br>
 `# systemctl start libvirtd.service`
 `# systemctl start virtlogd.service`
 
 Optionally enable libvirtd.service.<br>
 There is no need to enable virtlogd.service, since libvirtd.service, when enabled, also enables the virtlogd.socket and virtlockd.socket units.
 
-- test<br>
 To test if libvirt is working properly on a system level:<br>
 `$ virsh -c qemu:///system`
 
 To test if libvirt is working properly for a user-session:<br>
 `$ virsh -c qemu:///session`
 
-
 ### Management
 
-- Print active and inactive storage pools<br>
+#### Print active and inactive storage pools
 `$ virsh pool-list --all`
 
-#### create a new pool using virsh
+#### Create a new pool using virsh
 
-define a directory<br>
+- define a directory<br>
 `$ virsh pool-define-as poolname dir - - - - /home/username/.local/libvirt/images`
 
-##### define a LVM volume 
+- define a LVM volume <br>
 `$ virsh pool-define-as poolname fs - -  /dev/vg0/images - mntpoint`
 
 Tip: For LVM storage pools:<br>
@@ -80,7 +78,7 @@ $ virsh pool-autostart poolname
 `$ virsh pool-undefine  poolname`
 
 
-- manage volumes
+#### Manage volumes
 ```
 $ virsh vol-create-as      poolname volumename 10GiB --format aw|bochs|raw|qcow|qcow2|vmdk
 $ virsh vol-upload  --pool poolname volumename volumepath
@@ -90,7 +88,7 @@ $ virsh vol-delete  --pool poolname volumename
 $ virsh vol-dumpxml --pool poolname volumename  # for details.
 ```
 
-- manage domains
+#### Manage domains
 `# virsh list --all`
 
 - create new domain - examples

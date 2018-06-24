@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Install GNS3 on Arch Linux
-tags: [netwroking, gns3]
+tags: [networking, gns3]
 ---
 
 ##		{--- Dynamips ---}

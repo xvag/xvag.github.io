@@ -175,3 +175,10 @@ Read /etc/conf.d/libvirt-guests for service options.
 - edit a domain's XML configuration<br>
 `$ virsh edit domain`
 
+- clone domain
+`# virt-clone --original {Domain-Vm-Name-Here} --auto-clone`
+or<br>
+`# virt-clone --original {Domain-Vm-Name-Here} --name {New-Domain-Vm-Name-Here} --auto-clone`
+or<br>
+`# virt-clone --original {Domain-Vm-Name-Here} --name {New-Domain-Vm-Name-Here} --file {/var/lib/libvirt/images/File.Name.here}`
+

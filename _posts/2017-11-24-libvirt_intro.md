@@ -67,7 +67,7 @@ Choose a LVM volume group that differs from the pool name,
 otherwise when the storage pool is deleted the LVM group will be too.
 
 The above command defines the information for the pool
-- to build it
+- to build it:
 ```
 $ virsh pool-build     poolname
 $ virsh pool-start     poolname
@@ -79,6 +79,9 @@ $ virsh pool-autostart poolname
 
 
 #### manage volumes
+Once the pool has been created, volumes can be created inside the pool. 
+If building a new domain (virtual machine), this step can be skipped 
+as a volume can be created in the domain creation process.
 ```
 $ virsh vol-create-as      poolname volumename 10GiB --format aw|bochs|raw|qcow|qcow2|vmdk
 $ virsh vol-upload  --pool poolname volumename volumepath

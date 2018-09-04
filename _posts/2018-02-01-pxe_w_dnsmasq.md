@@ -1,7 +1,7 @@
 ---
 layout: post
 title: PXE server with dnsmasq
-tags: [linux, pxe, dnsmasq, networking]
+tags: [linux, pxe, dnsmasq, networking, service configuration]
 ---
 
 Host: Arch 4.15<br>

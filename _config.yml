@@ -2,8 +2,13 @@
 title: "notes/logs/labs"
 description: ""
 baseurl: ""
-url: ""
+url: "test.test"
 author: ""
+
+# Footer
+footer-links:
+ github: xvag
+ twitter: xvag
 
 # Build settings
 kramdown:

@@ -35,7 +35,7 @@ ServerName localhost
 <H3>Set up SSL</H3>
 `# yum install ssl_mod openssl`<br>
 
-- Generate self-signed certificate
+- Generate self-signed certificate<br>
 ```
 # location to store
 tmpath=/etc/pki/tls
@@ -49,9 +49,9 @@ openssl req -new -key $tmpath/private/test.key -out $tmpath/private/test.csr
 # Generate Self Signed Cert
 openssl x509 -req -days 365 -in $tmpath/private/test.csr -signkey $tmpath/private/test.key -out $tmpath/certs/test.crt
 ```
+
 - update Apache SSL config file<br>
 `# vi /etc/httpd/conf.d/ssl.conf`<br>
-
 ```
 [...]
 SSLCertificateFile /etc/pki/tls/certs/test.crt

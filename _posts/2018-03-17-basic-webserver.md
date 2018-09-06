@@ -11,6 +11,7 @@ Host: CentOS 7<br>
 
 - httpd configuration file:<br>
 `# vi /etc/httpd/conf/httpd.conf`<br>
+
 ```
 [...]
 # port/ip the server listens to:
@@ -50,6 +51,7 @@ openssl x509 -req -days 365 -in $tmpath/private/test.csr -signkey $tmpath/privat
 ```
 - update Apache SSL config file<br>
 `# vi /etc/httpd/conf.d/ssl.conf`<br>
+
 ```
 [...]
 SSLCertificateFile /etc/pki/tls/certs/test.crt
@@ -58,7 +60,7 @@ SSLCertificateKeyFile /etc/pki/tls/private/test.key
 [...]
 ```
 
-- configure firewall
+- configure firewall<br>
 ```
 firewall-cmd --permanent --zone=public --add-service=http
 firewall-cmd --permanent --zone=public --add-service=https

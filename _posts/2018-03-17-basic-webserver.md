@@ -3,7 +3,7 @@ layout: post
 title: Basic Web Server with SSL
 tags: [httpd, apache, service configuration, CentOS, ssl]
 ---
-
+```
 Host: CentOS 7<br>
 
 <H3>Set up the server<H3>
@@ -73,4 +73,4 @@ firewall-cmd --reload
 https://httpd.apache.org/docs/2.4/<br>
 https://wiki.centos.org/HowTos/Https<br>
 https://www.tecmint.com/setup-apache-with-name-based-virtual-hosting-with-ssl-certificate/<br>
-
+```

@@ -94,6 +94,7 @@ h6 {
  * Links
  */
 a {
+    font: $base-font-weight #{$base-font-size}/#{$base-line-height} $base-font-family;
     color: $link-color;
     text-decoration: none;
 

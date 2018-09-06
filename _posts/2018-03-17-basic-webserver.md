@@ -72,7 +72,7 @@ firewall-cmd --reload
 
 `# systemctl start/restart/enable httpd`
 
-- links:<br>
+links:<br>
 https://httpd.apache.org/docs/2.4/<br>
 https://wiki.centos.org/HowTos/Https<br>
 https://www.tecmint.com/setup-apache-with-name-based-virtual-hosting-with-ssl-certificate/

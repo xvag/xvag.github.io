@@ -4,5 +4,4 @@ title: links
 ---
 
 - the useful links:<br>
-
-<a href="{{ '/awesomesysadmin/' | prepend: site.baseurl | prepend: site.url }}">awesome-sysadmin</a>
+[Awesome Sysadmin] (https://github.com/kahun/awesome-sysadmin) 

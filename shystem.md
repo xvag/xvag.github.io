@@ -3,6 +3,7 @@ layout: page
 permalink: /shystem/
 ---
 
+--- GRUB ---
 ```
 GRUB config file (Centos):
 /etc/default/grub
@@ -11,9 +12,10 @@ GRUB config file (Centos):
 
 list entries:
 # awk -F\' '$1=="menuentry " {print $2}' /boot/grub2/grub.cfg
-
+```
 
 --- kernel runtime parameters ---
+```
 # sysctl
 # sysctl -a (list)
 the name of a parameter matches the directory structure inside /proc/sys where it can be found.
@@ -46,14 +48,16 @@ net.ipv4.icmp_echo_ignore_all=1
 
 and then:
 # sysctl -p
-
+```
 
 --- Services ---
+```
 # systemctl {status/start/stop/restart/enable/disable/is-enabled} [service]
 # systemctl {reboot/shutdown}
-
+```
 
 --- Resources ---
+```
 # mpstat -P ALL -u 2 3 (processor monitoring tool from sysstat package)
 # ps -eo pid,ppid,cmd,%cpu,%mem --sort=-%cpu (monitor processes)
 /proc/PID/ = info about the process
@@ -74,9 +78,10 @@ eg.
  # pkill -P 4993 (kill all with PPID=4993)
 
 # pgrep -l -u <username> (test before pkill)
-
+```
 
 --- Package Management ---
+```
 # rpm -i package.rmp (install from compiled file)
 # rpm -U file.rpm (upgrade)
 # rpm -qa (list installed packages)
@@ -90,3 +95,4 @@ eg.
 # yum erase package_name
 # yum info package_name
 ```
+

@@ -4,7 +4,7 @@ permalink: /shystem/
 ---
 
 `# top -hv|-bcEHiOSs1 -d secs -n max -u|U user -p pid -o fld -w [cols]`<br>
-`# free [options]`<dbr>
+`# free [options]`<br>
 `# ps [options]`<br>
 
 - log files:<br>

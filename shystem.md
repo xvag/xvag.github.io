@@ -1,6 +1,6 @@
 ---
 layout: page
-permalink: shystem
+permalink: /shystem/
 ---
 
 ```

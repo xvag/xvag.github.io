@@ -1,6 +1,6 @@
 ---
 layout: page
-permalink: usersh
+permalink: /usersh/
 ---
 
 ```

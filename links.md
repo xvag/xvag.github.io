@@ -1,6 +1,6 @@
 ---
 layout: page
-permalink: links
+permalink: /links/
 ---
 
 - [awesome sysadmin](https://github.com/kahun/awesome-sysadmin)<br>

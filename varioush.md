@@ -1,6 +1,6 @@
 ---
 layout: page
-permalink: varioush
+permalink: /varioush/
 ---
 
 ```

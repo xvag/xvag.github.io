@@ -10,3 +10,8 @@ kramdown:
   input: GFM
 permalink: pretty
 
+plugins:
+ - jekyll-relative-links
+
+relative_links:
+ enabled: true

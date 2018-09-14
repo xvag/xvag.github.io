@@ -3,6 +3,9 @@ layout: page
 permalink: /shystem/
 ---
 
+- report file system disk space usage
+`# df [OPTION]... [FILE]...`
+
 --- GRUB ---
 ```
 GRUB config file (Centos):

@@ -1,3 +1,7 @@
+---
+permalink: /varioush/
+---
+
 ```
 /* create bootable usb w/ dd */
 # dd if=/path/to/.iso of=/dev/sdX bs=4M status=progress oflag=sync

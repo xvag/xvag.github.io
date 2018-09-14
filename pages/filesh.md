@@ -1,3 +1,8 @@
+---
+layout: page
+permalink: filesh
+---
+
 ```
 sed 's/term/replacement/flag' file
 sed 's/term/repl/flag;s/term/repl/flag' file

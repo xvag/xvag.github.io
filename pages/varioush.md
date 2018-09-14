@@ -1,5 +1,6 @@
 ---
-permalink: /varioush/
+layout: page
+permalink: varioush
 ---
 
 ```

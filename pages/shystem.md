@@ -1,3 +1,8 @@
+---
+layout: page
+permalink: shystem
+---
+
 ```
 GRUB config file (Centos):
 /etc/default/grub

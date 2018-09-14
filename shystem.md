@@ -3,7 +3,7 @@ layout: page
 permalink: /shystem/
 ---
 
-`# top`<br>
+`# top -hv|-bcEHiOSs1 -d secs -n max -u|U user -p pid -o fld -w [cols]`<br>
 `# free`<br>
 `# ps`<br>
 `/var/log`<br>

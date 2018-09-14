@@ -1,3 +1,6 @@
+---
+permalink: /links/
+---
 
 - [awesome sysadmin](https://github.com/kahun/awesome-sysadmin)<br>
 a curated list of amazingly awesome open source sysadmin resources

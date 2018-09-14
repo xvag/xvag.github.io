@@ -5,10 +5,6 @@ baseurl: ""
 url: ""
 author: ""
 
-#footer-links:
-# github: xvag
-# twitter: xvag
-
 # Build settings
 kramdown:
   input: GFM

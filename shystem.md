@@ -1,4 +1,4 @@
-```shell
+```console
 GRUB config file (Centos):
 /etc/default/grub
 /etc/grub.d/

@@ -4,8 +4,10 @@ permalink: /shystem/
 ---
 
 `# top -hv|-bcEHiOSs1 -d secs -n max -u|U user -p pid -o fld -w [cols]`<br>
-`# free`<br>
-`# ps`<br>
+`# free [options]`<dbr>
+`# ps [options]`<br>
+
+- log files:<br>
 `/var/log`<br>
 
 - report file system disk space usage:<br>

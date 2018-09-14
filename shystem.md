@@ -3,6 +3,11 @@ layout: page
 permalink: /shystem/
 ---
 
+`# top`<br>
+`# free`<br>
+`# ps`<br>
+`/var/log`<br>
+
 - report file system disk space usage:<br>
 `# df [OPTION]... [FILE]...`
 

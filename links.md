@@ -1,5 +1,5 @@
 
-- [Awesome Sysadmin](https://github.com/kahun/awesome-sysadmin)<br>
+- [awesome sysadmin](https://github.com/kahun/awesome-sysadmin)<br>
 a curated list of amazingly awesome open source sysadmin resources
 
 - [explainshell](https://explainshell.com/)<br>

@@ -3,8 +3,11 @@ layout: page
 permalink: /shystem/
 ---
 
-- report file system disk space usage<br>
+- report file system disk space usage:<br>
 `# df [OPTION]... [FILE]...`
+
+- estimate file space usage:<br>
+`# du [OPTION]... [FILE]...`
 
 --- GRUB ---
 ```

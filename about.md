@@ -1,6 +1,6 @@
 ---
 layout: page
-title: ..this is abou? what..
+title: .this is abou? what.
 permalink: /about/
 ---
 

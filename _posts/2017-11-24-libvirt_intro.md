@@ -184,3 +184,8 @@ or
 # virt-clone --original {Domain-Vm-Name-Here} --name {New-Domain-Vm-Name-Here} --file {/var/lib/libvirt/images/File.Name.here}
 ```
 
+sources:<br>
+https://wiki.archlinux.org/index.php/Libvirt<br>
+https://jamielinux.com/docs/libvirt-networking-handbook/index.html<br>
+https://libvirt.org/formatdomain.html<br>
+https://wiki.libvirt.org/page/Networking<br>

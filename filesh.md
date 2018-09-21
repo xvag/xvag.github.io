@@ -3,6 +3,44 @@ layout: page
 permalink: /filesh/
 ---
 
+awk<br>
+```
+# awk '/pattern/ { actions }' filename
+# awk '//{print}'/etc/hosts
+# awk '/localhost/{print}' /etc/hosts 
+# awk '/l*c/{print}' /etc/hosts
+# awk '/[al1]/{print}' /etc/hosts
+# awk '/^ff/{print}' /etc/hosts
+# awk '//{print $1, $2, $3; }' filename
+# awk '//{printf "%-10s %s\n",$2, $3 }' filename
+# awk '/ *\$[2-9]\.[0-9][0-9] */ { print $0 "*" ; } / *\$[0-1]\.[0-9][0-9] */ { print ; }' filename
+# awk '$3 <= 20 { printf "%s\t%s\n", $0,"TRUE" ; } $3 > 20  { print $0 ;} ' filename
+# awk '($3 ~ /^\$[2-9][0-9]*\.[0-9][0-9]$/) && ($4=="Tech") { printf "%s\t%s\n",$0,"*"; } ' filename
+# awk '$4 <= 20 { printf "%s\t%s\n", $0,"*" ; next; } $4 > 20 { print $0 ;} ' filename
+# dir -l | awk '{print $3, $4, $9;}'
+# uname -a | awk '{hostname=$2 ; print hostname ; }'
+# cat /etc/passwd | awk -v name="$username" ' $0 ~ name {print $0}'
+ -v : Awk option to declare a variable
+
+awk '
+BEGIN { actions } 
+/pattern/ { actions }
+/pattern/ { actions }
+...
+END { actions } 
+' filenames 
+
+Built-in variables:
+FILENAME : current input file name( do not change variable name)
+FR : number of the current input line (that is input line 1, 2, 3# so on, do not change variable name)
+NF : number of fields in current input line (do not change variable name)
+OFS : output field separator
+FS : input field separator
+ORS : output record separator
+RS : input record separator
+NR : number of records (lines)
+```
+
 ```
 sed 's/term/replacement/flag' file
 sed 's/term/repl/flag;s/term/repl/flag' file

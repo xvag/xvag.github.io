@@ -1,9 +1,9 @@
 ---
 layout: page
-permalink: /commandsh/
+permalink: /notesh/
 ---
 
-notebook of shell commands<br>
+notebook of shell commands and tools<br>
 
 - <a href="{{ '/filesh/' | prepend: site.baseurl | prepend: site.url }}">/filesh</a><br>
 - <a href="{{ '/usersh/' | prepend: site.baseurl | prepend: site.url }}">/usersh</a><br>

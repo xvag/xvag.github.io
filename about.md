@@ -4,4 +4,4 @@ title: .this is abou? what.
 permalink: /about/
 ---
 
-[logging while exploring the path](https://github.com/xvag){:target="_blank"}
+[logging while exploring the path of systems administration]

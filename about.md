@@ -4,4 +4,4 @@ title: .this is abou? what.
 permalink: /about/
 ---
 
-[logging while exploring the path of systems administration]
+logging while exploring it

@@ -4,4 +4,4 @@ title: .this is abou? what.
 permalink: /about/
 ---
 
-logging while exploring it.
+.logging while exploring it.

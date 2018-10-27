@@ -1,6 +1,6 @@
 ---
 layout: page
-permalink: /notesh/
+permalink: /shell/
 ---
 
 notebook of shell commands and tools<br>

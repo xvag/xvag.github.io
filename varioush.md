@@ -20,4 +20,8 @@ echo "allow br0" > /etc/qemu/bridge.conf
 # ps -eo pid,ppid,cmd,%cpu,%mem --sort=%cpu | head
 
 for i in ./*; do file $i | grep -iq png; if [ $? -eq 0 ]; then echo $i; fi; done;
+
+/* cd-rw format & burn iso */
+# cdrecord -v dev=/dev/sr0 blank=fast
+# drecord -v -dao dev=/dev/sr0 /tmp/boot.iso
 ```

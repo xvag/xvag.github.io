@@ -5,3 +5,5 @@ permalink: /about/
 ---
 
 logging while exploring it
+
+![devops]({{ "/pics/devops.png" | absolute_url }})

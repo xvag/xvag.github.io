@@ -7,4 +7,4 @@ permalink: /about/
 logging while exploring it
 
 ![devops]({{ "/pics/devops.png" | absolute_url }})<br>
-[img src](https://github.com/kamranahmedse/developer-roadmap)
+[image source](https://github.com/kamranahmedse/developer-roadmap)

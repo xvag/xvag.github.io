@@ -6,5 +6,5 @@ permalink: /about/
 
 logging while exploring it
 
-![devops]({{ "/pics/devops.png" | absolute_url }})<br>
+![sysad]({{ "/pics/sysad.png" | absolute_url }})<br>
 [image source](https://github.com/kamranahmedse/developer-roadmap)
